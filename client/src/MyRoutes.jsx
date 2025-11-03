@@ -14,6 +14,7 @@ import ManageProfile from "./pages/Seller/ManageProfile";
 import SellerProfile from "./static_pages/SellerProfile";
 import Catregories from "./pages/Seller/Catregories";
 import ViewProductPage from "./pages/Seller/ViewProductPage";
+import ShopPage from "./pages/Seller/ShopPage";
 
 const MyRoutes = () => {
   return (
@@ -31,6 +32,7 @@ const MyRoutes = () => {
           <Route path="/pages/sellers/sellerLogin" element={<AdminLogin />} />
           <Route path="/pages/users/userSignup" element={<UserSignup />} />
           <Route path="/pages/sellers/sellerSignup" element={<AdminSignup />} />
+          <Route path="/shop" element={<ShopPage />} />
           <Route
             path="/pages/sellers/manageProfile/:id"
             element={<ManageProfile />}

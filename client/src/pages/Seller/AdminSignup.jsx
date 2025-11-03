@@ -124,7 +124,7 @@ const AdminSignup = () => {
             <p className="text-sm text-red-500 ml-1" id="p1">
               {errors.fullName}
             </p>
-
+            {/** Phone Number */}
             <div className="mt-3">
               <label className="block text-[#5a3e2b] text-sm font-medium mb-1">
                 Phone Number

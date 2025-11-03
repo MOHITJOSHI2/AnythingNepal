@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, href } from "react-router-dom";
 
 const ViewProductPage = () => {
   const { id } = useParams();
@@ -89,9 +89,12 @@ const ViewProductPage = () => {
 
         <div className="flex justify-center mb-4">
           <img
-            src={`http://localhost:8000/assets/${product.src}`}
+            src={`http://192.168.1.72:8000/assets/${product.src}`}
             alt={product.name}
             className="w-60 h-40 object-contain rounded-xl shadow-md"
+            onClick={() =>
+              (location.href = `http://192.168.1.72:8000/assets/${product.src}`)
+            }
           />
         </div>
 
