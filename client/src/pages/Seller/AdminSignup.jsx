@@ -64,16 +64,22 @@ const AdminSignup = () => {
   const handleSubmit = async () => {
     const response = SignupController.HandleCorrections1(data);
     setErrors(response);
-    setStep({ value: response.page });
+    if (response.page === 1)
+      setStep({ value: 1, text: "Personal Information" });
+    else if (response.page === 2)
+      setStep({ value: 2, text: "Account Information" });
 
     if (Object.keys(response).length === 0) {
-      const req = await fetch("http://192.168.1.72:8000/seller/addSeller", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const req = await fetch(
+        `${import.meta.env.VITE_localhost}/seller/addSeller`,
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const res = await req.json();
       if (req.ok) {

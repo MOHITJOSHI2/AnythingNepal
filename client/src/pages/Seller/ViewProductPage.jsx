@@ -18,7 +18,7 @@ const ViewProductPage = () => {
     const fetchProduct = async () => {
       try {
         const req = await fetch(
-          `http://192.168.1.72:8000/seller/getSingleProduct/${id}`
+          `${import.meta.env.VITE_localhost}/seller/getSingleProduct/${id}`
         );
         const res = await req.json();
 
@@ -89,11 +89,13 @@ const ViewProductPage = () => {
 
         <div className="flex justify-center mb-4">
           <img
-            src={`http://192.168.1.72:8000/assets/${product.src}`}
+            src={`${import.meta.env.VITE_localhost}/assets/${product.src}`}
             alt={product.name}
             className="w-60 h-40 object-contain rounded-xl shadow-md"
             onClick={() =>
-              (location.href = `http://192.168.1.72:8000/assets/${product.src}`)
+              (location.href = `${import.meta.env.VITE_localhost}/assets/${
+                product.src
+              }`)
             }
           />
         </div>

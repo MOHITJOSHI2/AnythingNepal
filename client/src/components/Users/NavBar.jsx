@@ -23,7 +23,7 @@ const NavBar = ({
     "text-white/90 hover:text-amber-400 cursor-pointer text-lg transition-all duration-200 ease-in-out";
 
   return (
-    <nav className="backdrop-blur-md bg-black/40 border-b border-white/10 sticky top-0 z-50">
+    <nav className="backdrop-blur-md bg-cyan-900 bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <div

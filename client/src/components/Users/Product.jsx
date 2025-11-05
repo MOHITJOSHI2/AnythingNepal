@@ -12,7 +12,7 @@ const Product = ({ productId, src, name, price }) => {
     >
       <div className="w-full h-[18vh] flex items-center justify-center bg-gradient-to-b from-transparent via-[#f4ede1] to-[#eaddcf] rounded-xl p-2">
         <img
-          src={`http://192.168.1.72:8000/assets/${src}`}
+          src={`${import.meta.env.VITE_localhost}/assets/${src}`}
           alt="Nepali traditional model"
           className="w-full h-full drop-shadow-[0_8px_15px_rgba(90,62,43,0.3)]"
         />

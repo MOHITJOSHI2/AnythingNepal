@@ -14,7 +14,7 @@ const HandleCorrections1 = (data) => {
         errors.page = 1
     }
     if (!gender) {
-        errors.age = "Please Specify your gender"
+        errors.gender = "Please Specify your gender"
         errors.page = 1
     }
     if (!district) {
@@ -29,7 +29,12 @@ const HandleCorrections1 = (data) => {
         errors.address = "Address cannot be null"
         errors.page = 1
     }
-    if (!errors.fullName || !errors.phone || !errors.gender || !errors.age || !errors.district || !errors.city || !errors.address) {
+    if (!errors.fullName &&
+        !errors.phone &&
+        !errors.gender &&
+        !errors.district &&
+        !errors.city &&
+        !errors.address) {
 
         if (!email) {
             errors.email = "Email cannot be null"

@@ -43,7 +43,7 @@ const CreateShop = ({ id }) => {
 
     try {
       const req = await fetch(
-        `http://192.168.1.72:8000/seller/addProduct/${id}`,
+        `${import.meta.env.VITE_localhost}/seller/addProduct/${id}`,
         {
           method: "POST",
           body: formData,

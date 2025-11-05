@@ -3,7 +3,7 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-[#f7f1e3] to-[#f4ede1] border-t border-[#d4a373] shadow-inner mt-10">
+    <footer className="bg-gradient-to-br from-[#f7f1e3] to-[#f4ede1] border-t border-[#d4a373] shadow-inner">
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand */}
         <div>

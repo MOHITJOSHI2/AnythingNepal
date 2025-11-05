@@ -21,6 +21,7 @@ const AdminLogin = () => {
   };
 
   useEffect(() => {
+    console.log(import.meta.env.VITE_localhost);
     if (localStorage.getItem("seller")) {
       navigate(`/adminHomePage/${localStorage.getItem("seller")}`);
     }
@@ -30,13 +31,16 @@ const AdminLogin = () => {
     const response = SignupController.HandleCorrections2(data);
     setErrors(response);
     try {
-      const req = await fetch("http://192.168.1.72:8000/seller/sellerLogin", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const req = await fetch(
+        `${import.meta.env.VITE_localhost}/seller/sellerLogin`,
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const res = await req.json();
       if (req.ok) {

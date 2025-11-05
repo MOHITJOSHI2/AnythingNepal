@@ -1,29 +1,41 @@
 import React from "react";
 import "../../App.css";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Product = ({ productId, src, name, price }) => {
   const navigate = useNavigate();
 
   return (
-    <div
-      className="box-border w-[33vh] bg-gradient-to-br from-[#f7f1e3] to-[#f4ede1] border border-[#d4a373] rounded-2xl shadow-[0_10px_25px_rgba(90,62,43,0.2)] p-5 mx-5 my-1 hover:shadow-[0_15px_35px_rgba(90,62,43,0.3)] hover:scale-[1.02] transition-all duration-300"
+    <motion.div
+      whileHover={{ scale: 1.04, y: -5 }}
+      transition={{ type: "spring", stiffness: 200, damping: 12 }}
       onClick={() => navigate(`/viewProduct/${productId}`)}
+      className="cursor-pointer relative overflow-hidden w-[34vh] bg-gradient-to-br from-[#fff8f0] to-[#f5ede3] border border-[#d4a373]/70 rounded-2xl shadow-[0_8px_20px_rgba(0,0,0,0.15)] p-5 mx-5 my-3 hover:shadow-[0_15px_35px_rgba(212,163,115,0.35)] transition-all duration-500"
     >
-      <div className="w-full h-[18vh] flex items-center justify-center bg-gradient-to-b from-transparent via-[#f4ede1] to-[#eaddcf] rounded-xl p-2">
+      {/* Decorative background pattern */}
+      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none" />
+
+      {/* Image section */}
+      <div className="w-full h-[20vh] flex items-center justify-center bg-gradient-to-b from-[#f5e6ca] via-[#f8f1e4] to-[#eaddcf] rounded-xl overflow-hidden shadow-inner">
         <img
-          src={`http://192.168.1.72:8000/assets/${src}`}
-          alt="Nepali traditional model"
-          className="w-full h-full drop-shadow-[0_8px_15px_rgba(90,62,43,0.3)]"
+          src={`${import.meta.env.VITE_localhost}/assets/${src}`}
+          alt={name}
+          className="w-full h-full object-cover rounded-lg hover:scale-110 transition-transform duration-500"
         />
       </div>
 
       {/* Text */}
-      <div className="text-left mt-2">
-        <p className="text-md font-bold text-[#5a3e2b] tracking-wide">{name}</p>
-        <p className="text-sm text-[#8b3e2f]">{price}</p>
+      <div className="text-left mt-4">
+        <p className="text-lg font-semibold text-[#4a3426] tracking-wide line-clamp-1">
+          {name}
+        </p>
+        <p className="text-sm text-[#8b3e2f] font-medium mt-1">Rs. {price}</p>
       </div>
-    </div>
+
+      {/* Glow effect on hover */}
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#fff3e0]/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+    </motion.div>
   );
 };
 

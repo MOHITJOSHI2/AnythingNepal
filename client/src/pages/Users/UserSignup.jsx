@@ -62,16 +62,23 @@ const UserSignup = () => {
   const handleSubmit = async () => {
     const response = HandleCorrections1.HandleCorrections1(data);
     setErrors(response);
-    setStep({ value: response.page });
+    if (response.page == 1) {
+      setStep({ text: "Personal Information", value: 1 });
+    } else if (response.page == 2) {
+      setStep({ text: "Account Information", value: 1 });
+    }
 
     if (errors == "") {
-      const req = await fetch("http://192.168.1.72:8000/user/addUser", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const req = await fetch(
+        `${import.meta.env.VITE_localhost}/user/addUser`,
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const res = req.json();
       if (req.ok) {

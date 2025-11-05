@@ -14,7 +14,7 @@ const AVProduct = () => {
     } else {
       async function fetchData() {
         const req = await fetch(
-          `http://192.168.1.72:8000/seller/getProduct/${id}`,
+          `${import.meta.env.VITE_localhost}/seller/getProduct/${id}`,
           {
             method: "GET",
             headers: {

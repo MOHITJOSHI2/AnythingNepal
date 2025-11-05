@@ -8,7 +8,7 @@ const Categories = () => {
     async function fetchProducts() {
       try {
         const req = await fetch(
-          "http://192.168.1.72:8000/seller/getTotalProduct",
+          `${import.meta.env.VITE_localhost}/seller/getTotalProduct`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },

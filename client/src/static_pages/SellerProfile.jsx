@@ -20,7 +20,7 @@ const SellerProfile = () => {
     if (id) {
       async function getData() {
         const req = await fetch(
-          `http://192.168.1.72:8000/seller/sellerData/${id}`
+          `${import.meta.env.VITE_localhost}/seller/sellerData/${id}`
         );
         const res = await req.json();
         if (req.ok) {
