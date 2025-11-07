@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const AddProduct = ({ id }) => {
-  const productCategory = ["Clothes", "Art and Artitecture", "Pottery"];
-
+  const productCategory = ["Clothes", "Art and Architecture", "Pottery"];
   const [img, setImg] = useState(null);
   const [productData, setProductData] = useState({
     photo: "",
@@ -33,10 +32,10 @@ const AddProduct = ({ id }) => {
 
   useEffect(() => {
     if (!id) {
-      console.log("Error occured");
+      console.log("Error occurred");
       return;
     }
-  });
+  }, [id]);
 
   async function sendData() {
     const formData = new FormData();
@@ -63,6 +62,7 @@ const AddProduct = ({ id }) => {
       if (req.ok) {
         console.log(res.message);
         document.getElementById("form").reset();
+        setImg(null);
       } else {
         console.log(res.err);
       }
@@ -72,23 +72,45 @@ const AddProduct = ({ id }) => {
   }
 
   return (
-    <div className="m-5 min-h-[600px] max-w-md ">
-      <div>
-        <form method="POST" action="/" id="form" enctype="multipart/form-data">
+    <div className="flex flex-col justify-center items-center py-3">
+      <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl overflow-hidden border border-[#d4a373]/40 transition-all duration-300 hover:shadow-2xl">
+        <div className="bg-gradient-to-r from-[#f8ead8] to-[#f4e3c1] p-5">
+          <h2 className="text-2xl font-bold text-center text-[#5a3e2b]">
+            Add a New Product
+          </h2>
+          <p className="text-center text-sm text-gray-600 mt-1">
+            Fill the details below to add your product
+          </p>
+        </div>
+
+        <form
+          method="POST"
+          action="/"
+          id="form"
+          encType="multipart/form-data"
+          className="p-5"
+        >
+          {/* Image Upload */}
           <div
             onClick={() => document.getElementById("productImage").click()}
-            className="text-center border-2 m-1 w-[35%] min-h-[150px] border-dashed hover:scale-101 transition-all ease-in-out cursor-pointer flex items-center justify-center overflow-hidden"
+            className="relative border-2 border-dashed border-black rounded-lg w-full h-48 flex flex-col items-center justify-center cursor-pointer hover:border-[#b07b4d] hover:bg-[#fff8f1] transition-all ease-in-out mb-4 overflow-hidden"
           >
             {img ? (
               <img
                 src={img}
                 alt="Preview"
-                className="w-full h-full object-cover rounded"
+                className="w-full h-full object-cover"
               />
             ) : (
-              "Choose Image"
+              <div className="text-center text-gray-500 font-medium">
+                <p>Click to upload image</p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Supported: jpg, png, jpeg
+                </p>
+              </div>
             )}
           </div>
+
           <input
             hidden
             type="file"
@@ -96,88 +118,93 @@ const AddProduct = ({ id }) => {
             id="productImage"
             required
             onChange={handleFileChange}
+            accept="image/jpeg, image/png, .jpg, .jpeg, .png"
           />
-          {/** Product Name */}
+
+          {/* Product Name */}
           <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-md font-medium m-1">
+            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
               Product Name
             </label>
             <input
               type="text"
               onChange={handleChange}
-              placeholder="Product Name"
+              placeholder="e.g., Handmade Clay Pot"
               name="productName"
               maxLength={100}
-              className="w-[95%] px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6] ml-1"
+              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
             />
           </div>
 
-          {/** Product Price */}
+          {/* Product Price */}
           <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-md font-medium m-1">
-              Product Price
-            </label>
-            <input
-              type="text"
-              maxLength={6}
-              name="productPrice"
-              onChange={handleChange}
-              placeholder="Product Price"
-              className="w-[95%] px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6] ml-1"
-            />
-          </div>
-          {/** Product Quantity */}
-
-          <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-md font-medium m-1">
-              Product Quantity
+            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
+              Product Price (Rs)
             </label>
             <input
               type="number"
+              maxLength={6}
+              name="productPrice"
               onChange={handleChange}
-              placeholder="Product Quantity"
-              name="productQuantity"
-              className="w-[95%] px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6] ml-1"
+              placeholder="e.g., 1500"
+              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
             />
           </div>
-          {/* Product Category */}
+
+          {/* Quantity */}
           <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-md font-medium m-1">
-              Product Category
+            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
+              Quantity
+            </label>
+            <input
+              type="number"
+              min={1}
+              onChange={handleChange}
+              placeholder="e.g., 10"
+              name="productQuantity"
+              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
+            />
+          </div>
+
+          {/* Category */}
+          <div className="mt-3">
+            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
+              Category
             </label>
             <select
               name="productCategory"
               value={productData.productCategory}
               onChange={handleChange}
-              className="w-[95%] px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6] ml-1"
+              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
             >
-              <option value="">--Select Category--</option>
-              {productCategory?.map((elem, index) => (
+              <option value="">-- Select Category --</option>
+              {productCategory.map((elem, index) => (
                 <option key={index} value={elem}>
                   {elem}
                 </option>
               ))}
             </select>
           </div>
-          {/** Product Description */}
+
+          {/* Description */}
           <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-md font-medium m-1">
-              Product Description
+            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
+              Description
             </label>
             <textarea
               name="productDescription"
-              id=""
-              cols="30"
-              rows="5"
               maxLength={300}
               onChange={handleChange}
-              placeholder="Product Description"
-              className="w-[95%] px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6] ml-1"
+              placeholder="Describe your product in a few sentences..."
+              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
+              rows="4"
             ></textarea>
           </div>
-          <div>
+
+          {/* Button */}
+          <div className="mt-5">
             <button
-              className="w-[95%] ml-1 mb-1 py-2 bg-green-600 text-white rounded-lg"
+              className="w-full py-2.5 bg-[#5a3e2b] hover:bg-[#7c583b] text-white font-semibold rounded-lg shadow-md transition-all duration-300"
               type="button"
               onClick={sendData}
             >

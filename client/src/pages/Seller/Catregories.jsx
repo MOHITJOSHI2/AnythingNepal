@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Product from "../../components/Sellers/Product";
+import NavBar from "../../components/Users/NavBar";
 
 const Categories = () => {
   const [products, setProducts] = useState([]);
+  const id = localStorage.getItem("seller");
+
+  useEffect(() => {
+    if (!id) {
+      console.log("id not found");
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -41,70 +49,84 @@ const Categories = () => {
   );
 
   return (
-    <div className="p-4">
-      {products.length === 0 ? (
-        <div className="text-center text-gray-600 text-lg">Loading...</div>
-      ) : (
-        <>
-          {/* Art and Artitecture */}
-          {artProducts.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-center mb-4">
-                Art and Artitecture
-              </h2>
-              <div className="flex overflow-x-auto gap-4 pb-2">
-                {artProducts.map((elem) => (
-                  <Product
-                    key={elem._id}
-                    productId={elem._id}
-                    src={elem.productImage}
-                    name={elem.productName}
-                    price={elem.productPrice}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Clothes */}
-          {clothesProducts.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-center mb-4">Clothes</h2>
-              <div className="flex overflow-x-auto gap-4 pb-2">
-                {clothesProducts.map((elem) => (
-                  <Product
-                    key={elem._id}
-                    productId={elem._id}
-                    src={elem.productImage}
-                    name={elem.productName}
-                    price={elem.productPrice}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Pottery */}
-          {potteryProducts.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-center mb-4">Pottery</h2>
-              <div className="flex overflow-x-auto gap-4 pb-2">
-                {potteryProducts.map((elem) => (
-                  <div key={elem._id} className="flex-shrink-0 w-58 mr-10">
+    <>
+      <NavBar
+        Contact={"Contact"}
+        Products={"Products"}
+        Shop={"ManageShop"}
+        Signup={id ? "Categories" : "Signup/login"}
+        Name={"Mohit Joshi"}
+        Id={id}
+        Contact1={"#footer"}
+        Products1={`/products/${id}`}
+        Shop1={"/shop"}
+        Signup1={id ? "/categories" : "/signup-login"}
+      />
+      <div className="p-4 bg-white">
+        {products.length === 0 ? (
+          <div className="text-center text-gray-600 text-lg">Loading...</div>
+        ) : (
+          <>
+            {/* Art and Artitecture */}
+            {artProducts.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-center mb-4">
+                  Art and Artitecture
+                </h2>
+                <div className="flex overflow-x-auto gap-4 pb-2">
+                  {artProducts.map((elem) => (
                     <Product
+                      key={elem._id}
                       productId={elem._id}
                       src={elem.productImage}
                       name={elem.productName}
                       price={elem.productPrice}
                     />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+            )}
+
+            {/* Clothes */}
+            {clothesProducts.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-center mb-4">Clothes</h2>
+                <div className="flex overflow-x-auto gap-4 pb-2">
+                  {clothesProducts.map((elem) => (
+                    <Product
+                      key={elem._id}
+                      productId={elem._id}
+                      src={elem.productImage}
+                      name={elem.productName}
+                      price={elem.productPrice}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Pottery */}
+            {potteryProducts.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-center mb-4">Pottery</h2>
+                <div className="flex overflow-x-auto gap-4 pb-2">
+                  {potteryProducts.map((elem) => (
+                    <div key={elem._id} className="flex-shrink-0 w-58 mr-10">
+                      <Product
+                        productId={elem._id}
+                        src={elem.productImage}
+                        name={elem.productName}
+                        price={elem.productPrice}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

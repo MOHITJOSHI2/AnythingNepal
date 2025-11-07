@@ -8,13 +8,14 @@ import img2 from "../../assets/items.jpg";
 import { useNavigate, useParams } from "react-router-dom";
 import Carousal from "../../components/App_components/Carousal";
 import { motion } from "motion/react";
+import "../../All.css";
 
 const AdminHomePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!id && !localStorage.getItem("seller")) {
+    if (!id || !localStorage.getItem("seller")) {
       navigate("/");
     }
   }, []);
@@ -48,7 +49,7 @@ const AdminHomePage = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen text-lg font-semibold text-gray-600">
-        Loading product details...
+        Loading page details...
       </div>
     );
   }
@@ -69,14 +70,14 @@ const AdminHomePage = () => {
         Signup1={id ? "/categories" : "/signup-login"}
       />
 
-      {/* Hero Carousel */}
+      {/* Carousel */}
       <div className="relative bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')] bg-opacity-20">
         <Carousal product={product} />
         <div className="absolute inset-0 bg-gradient-to-b"></div>
       </div>
 
       {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center min-h-[80vh] px-6 text-center bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')] bg-opacity-10">
+      <section className="relative flex flex-col items-center justify-center min-h-[80vh] px-6 text-center bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')] ">
         <motion.h1
           className="text-6xl md:text-7xl font-extrabold bg-gradient-to-r from-amber-400 to-red-500 bg-clip-text text-transparent drop-shadow-lg"
           initial={{ y: 50, opacity: 0 }}
@@ -109,9 +110,7 @@ const AdminHomePage = () => {
           Explore Categories
         </motion.button>
       </section>
-
       <section className="relative overflow-hidden py-24">
-        {/* Smooth gradient blend (top & bottom) */}
         <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-[#1a0f0b] to-transparent pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-[#fff7e6] to-transparent pointer-events-none"></div>
 
