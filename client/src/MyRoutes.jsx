@@ -15,6 +15,7 @@ import SellerProfile from "./static_pages/SellerProfile";
 import Catregories from "./pages/Seller/Catregories";
 import ViewProductPage from "./pages/Seller/ViewProductPage";
 import ShopPage from "./pages/Seller/ShopPage";
+import UpdateProduct from "./pages/Seller/UpdateProduct";
 
 const MyRoutes = () => {
   return (
@@ -42,6 +43,7 @@ const MyRoutes = () => {
           <Route path="/payment" element={<EsewaPayment />} />
           <Route path="/categories" element={<Catregories />} />
           <Route path="/viewProduct/:id" element={<ViewProductPage />} />
+          <Route path="/updateProduct/:id" element={<UpdateProduct />} />
         </Routes>
       </BrowserRouter>
     </div>

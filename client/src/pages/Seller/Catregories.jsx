@@ -81,6 +81,7 @@ const Categories = () => {
                       src={elem.productImage}
                       name={elem.productName}
                       price={elem.productPrice}
+                      quantity={elem.productQuantity}
                     />
                   ))}
                 </div>
@@ -99,6 +100,7 @@ const Categories = () => {
                       src={elem.productImage}
                       name={elem.productName}
                       price={elem.productPrice}
+                      quantity={elem.productQuantity}
                     />
                   ))}
                 </div>
@@ -117,6 +119,7 @@ const Categories = () => {
                         src={elem.productImage}
                         name={elem.productName}
                         price={elem.productPrice}
+                        quantity={elem.productQuantity}
                       />
                     </div>
                   ))}

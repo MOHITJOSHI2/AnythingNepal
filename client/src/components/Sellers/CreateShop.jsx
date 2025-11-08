@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateShop = ({ id }) => {
   const [img, setImg] = useState(null);
@@ -7,6 +8,8 @@ const CreateShop = ({ id }) => {
     shopName: "",
     shopDescription: "",
   });
+  const [shopNameErr, setShopNameErr] = useState("");
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -47,11 +50,11 @@ const CreateShop = ({ id }) => {
 
       const res = await req.json();
       if (req.ok) {
-        console.log(res.message);
-        document.getElementById("form").reset();
-        setImg(null);
+        localStorage.setItem("shop", res.shopId._id);
+        navigate(`/shop/${res.shopId._id}`);
       } else {
         console.log(res.err);
+        setShopNameErr(res.shopErr);
       }
     } catch (err) {
       console.log("Error:", err);
@@ -102,7 +105,9 @@ const CreateShop = ({ id }) => {
             maxLength={100}
             onChange={handleChange}
             className="w-full px-4 py-2 border-b-[2px] outline-0"
+            required
           />
+          <span className="text-red-500 text-sm">{shopNameErr}</span>
         </div>
 
         {/* Shop Description */}
@@ -112,11 +117,12 @@ const CreateShop = ({ id }) => {
           </label>
           <textarea
             name="shopDescription"
-            rows="5"
+            rows="4"
             placeholder="Describe your shop"
             maxLength={300}
             onChange={handleChange}
             className="w-full px-4 py-2 border-b-[2px] outline-0 resize-none"
+            required
           ></textarea>
         </div>
 

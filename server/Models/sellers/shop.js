@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
 const shopScema = new mongoose.Schema({
-    shopName: { type: String, required },
+    shopName: { type: String, required: true },
+    shopImage: { type: String, required: true },
+    shopDescription: { type: String, required: true },
     shopKeeper: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Seller",

@@ -5,10 +5,11 @@ import NavBar from "../../components/Users/NavBar";
 
 const ShopPage = () => {
   const id = localStorage.getItem("seller");
+  const shopId = localStorage.getItem("shop");
 
   return (
     <div className="bg-white">
-      <div>
+      <div className="">
         <NavBar
           Contact={"Contact"}
           Products={"Products"}
@@ -22,9 +23,13 @@ const ShopPage = () => {
           Signup1={id ? "/categories" : "/signup-login"}
         />
       </div>
-      <div className="flex justify-center items-start min-h-screen ">
-        <CreateShop />
-      </div>
+      {shopId ? (
+        ""
+      ) : (
+        <div className="flex justify-center items-start min-h-screen ">
+          <CreateShop id={id} />
+        </div>
+      )}
     </div>
   );
 };
