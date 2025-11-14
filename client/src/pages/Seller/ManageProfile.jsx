@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaShareAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
+import NavBar from "../../components/Users/NavBar";
 
 const ManageProfile = () => {
   const { id } = useParams();
@@ -28,8 +29,7 @@ const ManageProfile = () => {
         const res = await req.json();
         if (req.ok) {
           const response = res.getData;
-          setData((prev) => ({
-            ...prev,
+          setData({
             fullName: response.fullName || "",
             phone: response.phone || "",
             gender: response.gender || "",
@@ -38,8 +38,7 @@ const ManageProfile = () => {
             city: response.city || "",
             address: response.address || "",
             email: response.email || "",
-          }));
-          console.log(response.fullName);
+          });
         } else {
           console.log(res.err);
         }
@@ -51,78 +50,98 @@ const ManageProfile = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-amber-100 to-red-100 p-4">
-      <div className="bg-white shadow-xl rounded-2xl max-w-md w-full p-6 md:p-8">
-        {/* Header */}
-        <div className="flex flex-col items-center space-y-2 mb-6">
-          {/* Avatar */}
-          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-3xl font-bold text-gray-700">
+    <>
+      {/* Top Navbar */}
+      <NavBar
+        Contact={"Contact"}
+        Products={"Products"}
+        Shop={"ManageShop"}
+        Signup={id ? "Categories" : "Signup/login"}
+        Name={"Mohit Joshi"}
+        Id={id}
+        Contact1={"#footer"}
+        Products1={`/products/${id}`}
+        Shop1={"/shop"}
+        Signup1={id ? "/categories" : "/signup-login"}
+      />
+
+      <div className="min-h-screen bg-white text-gray-800 px-6 md:px-20 py-10">
+        <div className="flex flex-col items-center mb-12 relative">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16 w-64 h-64 bg-amber-200/30 rounded-full blur-3xl -z-10"></div>
+
+          <div className="w-28 h-28 rounded-full bg-gradient-to-br from-amber-400 to-red-400 flex items-center justify-center text-4xl font-bold text-white shadow-md">
             {data.fullName
               ?.split(" ")
               .map((n) => n[0])
               .join("")}
           </div>
 
-          {/* Name + Share Icon */}
-          <div className="flex items-center gap-2">
-            <p className="text-2xl md:text-3xl font-extrabold text-gray-800">
+          {/* Name + Share */}
+          <div className="flex items-center gap-3 mt-4">
+            <h1 className="text-3xl md:text-4xl font-extrabold">
               {data.fullName}
-            </p>
-            <span
-              className="text-xl text-gray-600 cursor-pointer hover:text-gray-800"
+            </h1>
+            <button
+              className="text-gray-500 hover:text-amber-600 transition"
               onClick={async () => {
                 await navigator.clipboard.writeText(
                   `http://localhost:5173/static_pages/sellerProfile/${id}`
                 );
               }}
             >
-              <FaShareAlt />
-            </span>
+              <FaShareAlt size={20} />
+            </button>
           </div>
+          <p className="text-gray-500 mt-2">{data.email}</p>
         </div>
 
-        {/* Info Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-gray-700">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8 max-w-5xl mx-auto mb-16">
           <div>
-            <p className="font-semibold">District, City</p>
-            <p>
-              {data.district}
-              {", "}
-              {data.city}
+            <p className="text-sm text-gray-500 uppercase font-medium">
+              District & City
+            </p>
+            <p className="text-lg font-semibold">
+              {data.district}, {data.city}
             </p>
           </div>
           <div>
-            <p className="font-semibold">Gender</p>
-            <p>{data.gender}</p>
+            <p className="text-sm text-gray-500 uppercase font-medium">
+              Gender
+            </p>
+            <p className="text-lg font-semibold">{data.gender}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 uppercase font-medium">Phone</p>
+            <p className="text-lg font-semibold">{data.phone}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 uppercase font-medium">
+              PAN Number
+            </p>
+            <p className="text-lg font-semibold">{data.panNumber}</p>
           </div>
           <div className="md:col-span-2">
-            <p className="font-semibold">Email</p>
-            <p>{data.email}</p>
-          </div>
-          <div>
-            <p className="font-semibold">Phone</p>
-            <p>{data.phone}</p>
-          </div>
-          <div>
-            <p className="font-semibold">PAN Number</p>
-            <p>{data.panNumber}</p>
+            <p className="text-sm text-gray-500 uppercase font-medium">
+              Address
+            </p>
+            <p className="text-lg font-semibold">{data.address}</p>
           </div>
         </div>
 
-        {/* Buttons */}
-        <div className="flex flex-col md:flex-row justify-center gap-4">
-          <button className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300">
+        {/* Action Buttons */}
+        <div className="flex flex-wrap justify-center gap-6">
+          <button className="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-8 rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
             Edit Profile
           </button>
           <button
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300"
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-8 rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
             onClick={() => {
               const ans = prompt("Do you really want to logout Y/N");
-              const ans1 = ans.toLowerCase();
-              if (ans1 === "y") {
+              if (ans && ans.toLowerCase() === "y") {
                 localStorage.removeItem("seller");
+                localStorage.removeItem("shop");
                 navigate("/");
-              } else if (ans1 === "n") {
+              } else if (ans && ans.toLowerCase() === "n") {
                 return;
               } else {
                 alert("Please enter y or n");
@@ -133,7 +152,7 @@ const ManageProfile = () => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

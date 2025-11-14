@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-const CreateShop = ({ id }) => {
+const UpdateShop = ({ id, onCancel, onUpdated }) => {
   const [img, setImg] = useState(null);
   const [shopData, setShopData] = useState({
     shopImage: "",
     shopName: "",
     shopDescription: "",
   });
-  const [shopNameErr, setShopNameErr] = useState("");
+  const shopId = localStorage.getItem("shop");
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -29,10 +28,32 @@ const CreateShop = ({ id }) => {
   };
 
   useEffect(() => {
-    if (!id) console.log("Error occurred: missing id");
-  }, [id]);
+    async function getShopData() {
+      try {
+        const req = await fetch(
+          `${import.meta.env.VITE_localhost}/seller/getSingleShop/${shopId}`
+        );
+        const res = await req.json();
 
-  async function sendData() {
+        if (req.ok) {
+          console.log(res.message.shopImage);
+          setShopData({
+            shopName: res.message.shopName,
+            shopImage: res.message.shopImage,
+            shopDescription: res.message.shopDescription,
+          });
+        } else {
+          console.log(res.err);
+        }
+      } catch (err) {
+        console.error("Error fetching shop data:", err);
+      }
+    }
+
+    getShopData();
+  }, []);
+
+  async function updateData() {
     const formData = new FormData();
     formData.append("shopImage", document.getElementById("shopImage").files[0]);
     formData.append("shopName", shopData.shopName);
@@ -40,7 +61,7 @@ const CreateShop = ({ id }) => {
 
     try {
       const req = await fetch(
-        `${import.meta.env.VITE_localhost}/seller/addShop/${id}`,
+        `${import.meta.env.VITE_localhost}/seller/updateShop/${shopId}`,
         {
           method: "POST",
           body: formData,
@@ -49,11 +70,10 @@ const CreateShop = ({ id }) => {
 
       const res = await req.json();
       if (req.ok) {
-        localStorage.setItem("shop", res.shopId);
-        window.location.reload();
+        console.log(res.message);
+        onUpdated();
       } else {
         console.log(res.err);
-        setShopNameErr(res.shopErr);
       }
     } catch (err) {
       console.log("Error:", err);
@@ -73,9 +93,15 @@ const CreateShop = ({ id }) => {
           onClick={() => document.getElementById("shopImage").click()}
           className="w-full h-48 border-2 border-dashed border-black rounded-2xl flex items-center justify-center cursor-pointer overflow-hidden relative hover:scale-105 transition-transform duration-300"
         >
-          {img ? (
+          {img || shopData.shopImage ? (
             <img
-              src={img}
+              src={
+                img
+                  ? img
+                  : `${import.meta.env.VITE_localhost}/assets/${
+                      shopData.shopImage
+                    }` // fetched image
+              }
               alt="Preview"
               className="w-full h-full object-cover rounded-2xl"
             />
@@ -102,11 +128,11 @@ const CreateShop = ({ id }) => {
             name="shopName"
             placeholder="Enter shop name"
             maxLength={100}
+            value={shopData.shopName}
             onChange={handleChange}
             className="w-full px-4 py-2 border-b-[2px] outline-0"
             required
           />
-          <span className="text-red-500 text-sm">{shopNameErr}</span>
         </div>
 
         {/* Shop Description */}
@@ -119,23 +145,33 @@ const CreateShop = ({ id }) => {
             rows="4"
             placeholder="Describe your shop"
             maxLength={300}
+            value={shopData.shopDescription}
             onChange={handleChange}
             className="w-full px-4 py-2 border-b-[2px] outline-0 resize-none"
             required
           ></textarea>
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="button"
-          onClick={sendData}
-          className="w-full py-3 bg-gradient-to-r from-amber-500 to-rose-400 text-white font-semibold rounded-2xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
-        >
-          Create Shop
-        </button>
+        {/* Buttons */}
+        <div className="flex justify-between gap-4">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="w-1/2 py-3 bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold rounded-2xl shadow-sm transition-all duration-300"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={updateData}
+            className="w-1/2 py-3 bg-gradient-to-r from-amber-500 to-rose-400 text-white font-semibold rounded-2xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+          >
+            Update Data
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
-export default CreateShop;
+export default UpdateShop;

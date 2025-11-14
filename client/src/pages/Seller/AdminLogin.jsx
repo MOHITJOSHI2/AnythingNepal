@@ -48,6 +48,9 @@ const AdminLogin = () => {
         localStorage.setItem("seller", res.id);
         navigate(`/adminHomePage/${res.id}`);
       } else {
+        setErrors({
+          email: res.err,
+        });
         console.log(res.err);
       }
     } catch (error) {

@@ -63,6 +63,7 @@ const AddProduct = ({ id }) => {
         console.log(res.message);
         document.getElementById("form").reset();
         setImg(null);
+        window.location.reload();
       } else {
         console.log(res.err);
       }

@@ -16,6 +16,7 @@ import Catregories from "./pages/Seller/Catregories";
 import ViewProductPage from "./pages/Seller/ViewProductPage";
 import ShopPage from "./pages/Seller/ShopPage";
 import UpdateProduct from "./pages/Seller/UpdateProduct";
+import Contact from "./pages/Seller/Contact";
 
 const MyRoutes = () => {
   return (
@@ -44,6 +45,7 @@ const MyRoutes = () => {
           <Route path="/categories" element={<Catregories />} />
           <Route path="/viewProduct/:id" element={<ViewProductPage />} />
           <Route path="/updateProduct/:id" element={<UpdateProduct />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </BrowserRouter>
     </div>

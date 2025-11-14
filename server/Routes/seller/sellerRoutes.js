@@ -1,6 +1,6 @@
-const { addSeller, sellerLogin, getSeller } = require('../../Controller/seller/seller')
+const { addSeller, sellerLogin, getSeller, sendMail } = require('../../Controller/seller/seller')
 const { addProduct, getProduct, getSingleProduct, getTotalProduct, deleteProduct, updateProduct } = require('../../Controller/seller/product')
-const { addShop } = require('../../Controller/seller/shop')
+const { addShop, getSingleShop, updateShop, findShopBySellerId } = require('../../Controller/seller/shop')
 
 const upload = require("../../Middleware/sellers/product")
 
@@ -22,7 +22,12 @@ router.delete("/deleteProduct/:id", deleteProduct)
 
 // Shop routes
 router.post('/addShop/:id', upload.upload.single('shopImage'), addShop)
+router.get('/getSingleShop/:id', getSingleShop)
+router.get('/getShopBySellerId/:id', findShopBySellerId)
+router.post('/updateShop/:id', upload.upload.single('shopImage'), updateShop)
 
+// Email
+router.post('/sendEmail', sendMail)
 
 
 module.exports = router;

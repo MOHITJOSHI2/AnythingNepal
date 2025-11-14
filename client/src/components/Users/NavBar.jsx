@@ -19,11 +19,18 @@ const NavBar = ({
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  const homeNav =
+    "sticky top-0 z-50 bg-gradient-to-b from-[#0d0d0d]/70 via-[#1a0e0e]/60 to-[#260505]/70 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.4)] border-b border-[#ffb347]/0";
+  const otherNav =
+    "sticky top-0 z-50 bg-gray-900 backdrop-blur-lg shadow-[0_4px_25px_rgba(0,0,0,0.35)] border-b border-[#333]/40";
+  const location = window.location.href;
+  let navCss = location.includes("/adminHomePage") ? homeNav : otherNav;
+
   const linkStyle =
     "text-white/90 hover:text-amber-400 cursor-pointer text-lg transition-all duration-200 ease-in-out";
 
   return (
-    <nav className="backdrop-blur-md bg-cyan-900 bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')] sticky top-0 z-50">
+    <nav className={navCss}>
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <div
@@ -47,18 +54,7 @@ const NavBar = ({
           <li className={linkStyle} onClick={() => navigate(Signup1)}>
             {Signup}
           </li>
-          <li
-            className={linkStyle}
-            onClick={() => {
-              if (Contact1 === "#footer") {
-                document
-                  .getElementById("footer")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              } else {
-                navigate(Contact1);
-              }
-            }}
-          >
+          <li className={linkStyle} onClick={() => navigate("/contact")}>
             {Contact}
           </li>
         </ul>
@@ -120,13 +116,8 @@ const NavBar = ({
                 key={i}
                 className={linkStyle}
                 onClick={() => {
-                  if (link.to === "#footer") {
-                    document
-                      .getElementById("footer")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  } else {
-                    navigate(link.to);
-                  }
+                  navigate(link.to);
+
                   setMenuOpen(false);
                 }}
               >

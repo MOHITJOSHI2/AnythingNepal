@@ -1,3 +1,4 @@
+const { sendMail } = require("../../Functions/app/sendMail");
 const { ecnryptId, decryptId } = require("../../Functions/sellers/idEncryption");
 const Seller = require("../../Models/sellers/sellers")
 
@@ -76,3 +77,20 @@ exports.getSeller = async (req, res) => {
     }
 }
 
+
+exports.sendMail = async (req, res) => {
+    const { email, subject, body } = req.body
+    try {
+        if (email && subject && body) {
+            const info = await sendMail(email, subject, body)
+            if (info) {
+                res.status(200).json({ message: "Mail send", info })
+            } else {
+                res.status(400).json({ err: "Mail cannot be sent at the moment" })
+
+            }
+        }
+    } catch (error) {
+        console.log("Error at mailing", error)
+    }
+}

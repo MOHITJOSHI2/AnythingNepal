@@ -13,7 +13,7 @@ const BigBox = ({ section, img, text, desc }) => {
     >
       {/* Text Section */}
       <div className="md:w-1/2 space-y-4 text-center md:text-left">
-        <h2 className="text-3xl font-extrabold text-bl2pxack drop-shadow-md">
+        <h2 className="text-3xl font-extrabold text-bl2pxack drop-shadow-md text-gray-800">
           {text}
         </h2>
         <p className="text-lg text-black leading-relaxed">{desc}</p>
