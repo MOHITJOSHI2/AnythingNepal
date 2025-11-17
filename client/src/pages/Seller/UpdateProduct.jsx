@@ -34,9 +34,9 @@ const UpdateProduct = () => {
   };
 
   useEffect(() => {
-    if (!id) {
+    if (!id && !localStorage.getItem("seller")) {
       console.log("Error occurred");
-      return;
+      navigate("/");
     }
   }, [id]);
 

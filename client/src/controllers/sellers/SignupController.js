@@ -8,26 +8,32 @@ const HandleCorrections1 = (data) => {
     if (phone.length != 10) {
         errors.phone = "Phone number must be of 10 numbers"
         errors.page = 1
+
     }
     if (panNumber.length != 9) {
         errors.panNumber = "Please add correct panNumber"
         errors.page = 1
+
     }
     if (!gender) {
         errors.gender = "Please Specify your gender"
         errors.page = 1
+
     }
     if (!district) {
         errors.district = "District cannot be null"
         errors.page = 1
+
     }
     if (!city) {
         errors.city = "City cannot be null"
         errors.page = 1
+
     }
     if (!address) {
         errors.address = "Address cannot be null"
         errors.page = 1
+
     }
     if (!errors.fullName &&
         !errors.phone &&
@@ -68,4 +74,32 @@ const HandleCorrections2 = (data) => {
     }
     return errors;
 }
-export default { HandleCorrections1, HandleCorrections2 };
+
+const HandleCorrections3 = (data) => {
+    const { fullName, phone, gender, district, city, address, email, password, confirmPassword } = data
+    const errors = {}
+    if (fullName.length < 5) {
+        errors.fullName = "full name cannot be less than 5 letters"
+    }
+    if (phone.length != 10) {
+        errors.phone = "Phone number must be of 10 numbers"
+    }
+    if (!district) {
+        errors.district = "District cannot be null"
+    }
+    if (!city) {
+        errors.city = "City cannot be null"
+    }
+    if (!address) {
+        errors.address = "Address cannot be null"
+    }
+    if (!email) {
+        errors.email = "Email cannot be null"
+    }
+    if (!password) {
+        errors.password = "Password cannot be null"
+    }
+
+    return errors
+}
+export default { HandleCorrections1, HandleCorrections2, HandleCorrections3 };

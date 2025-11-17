@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Product from "../../components/Sellers/Product";
 import NavBar from "../../components/Users/NavBar";
+import { useNavigate } from "react-router-dom";
 
 const Categories = () => {
   const [products, setProducts] = useState([]);
   const id = localStorage.getItem("seller");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) {
       console.log("id not found");
+      navigate("/");
     }
   }, []);
 

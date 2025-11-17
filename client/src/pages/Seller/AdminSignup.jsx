@@ -125,6 +125,7 @@ const AdminSignup = () => {
                 placeholder="full name"
                 maxLength={20}
                 className="w-full px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6]"
+                required
               />
             </div>
             <p className="text-sm text-red-500 ml-1" id="p1">
@@ -143,6 +144,7 @@ const AdminSignup = () => {
                 placeholder="phone number"
                 maxLength={10}
                 className="w-full px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6]"
+                required
               />
             </div>
             <p className="text-sm text-red-500 ml-1" id="p1">
@@ -195,6 +197,7 @@ const AdminSignup = () => {
                 onChange={handleChange}
                 placeholder="pan number"
                 className="w-full px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6]"
+                required
               />
             </div>
             <p className="text-sm text-red-500 ml-1" id="p1">
@@ -265,6 +268,7 @@ const AdminSignup = () => {
                 placeholder="address"
                 maxLength={35}
                 className="w-full px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6]"
+                required
               />
             </div>
             <p className="text-sm text-red-500 ml-1" id="p1">
@@ -304,6 +308,7 @@ const AdminSignup = () => {
                 onChange={handleChange}
                 placeholder="email"
                 className="w-full px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6]"
+                required
               />
             </div>
             <p className="text-sm text-red-500 ml-1" id="p1">
@@ -321,6 +326,7 @@ const AdminSignup = () => {
                 onChange={handleChange}
                 placeholder="password"
                 className="w-full px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6]"
+                required
               />
             </div>
             <p className="text-sm text-red-500 ml-1" id="p1">
@@ -338,6 +344,7 @@ const AdminSignup = () => {
                 onChange={handleChange}
                 placeholder="confirm password"
                 className="w-full px-4 py-2 border border-[#d4a373] rounded-lg bg-[#fdfaf6]"
+                required
               />
             </div>
             <p className="text-sm text-red-500 ml-1" id="p1">

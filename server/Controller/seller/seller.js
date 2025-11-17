@@ -43,6 +43,43 @@ exports.addSeller = async (req, res) => {
     }
 }
 
+exports.updateSeller = async (req, res) => {
+    const { fullName, phone, district, city, address, email, password } = req.body;
+    try {
+        if (!req.params.id) {
+            res.status(400).json({ err: "Id not found" })
+        }
+        const userId = decryptId(req.params.id)
+        const sellerData = await Seller.findById(userId)
+
+        const findSellerPhone = await Seller.find({ phone: phone })
+        const findSellerEmail = await Seller.find({ email: email })
+
+        if (findSellerEmail.length > 0 && (findSellerEmail[0].email !== sellerData.email)) {
+            res.status(400).json({ emailErr: "Email already exists" })
+        }
+        else if (findSellerPhone.length > 0 && (findSellerPhone[0].phone !== sellerData.phone)) {
+            res.status(400).json({ phoneErr: "Phone already exists" })
+        }
+
+        else {
+            const update = await Seller.findByIdAndUpdate(userId, {
+                fullName: fullName,
+                phone: phone,
+                district: district,
+                city: city,
+                address: address,
+                email: email,
+                password: password,
+            })
+            res.status(200).json({ message: "successfully updated user data" })
+        }
+
+    } catch (error) {
+        console.log("Error occurred", error)
+    }
+}
+
 exports.sellerLogin = async (req, res) => {
     try {
         const { email, password } = req.body

@@ -1,4 +1,4 @@
-const { addSeller, sellerLogin, getSeller, sendMail } = require('../../Controller/seller/seller')
+const { addSeller, sellerLogin, getSeller, sendMail, updateSeller } = require('../../Controller/seller/seller')
 const { addProduct, getProduct, getSingleProduct, getTotalProduct, deleteProduct, updateProduct } = require('../../Controller/seller/product')
 const { addShop, getSingleShop, updateShop, findShopBySellerId } = require('../../Controller/seller/shop')
 
@@ -10,6 +10,7 @@ const router = express.Router()
 router.post("/addSeller", addSeller)
 router.post("/sellerLogin", sellerLogin)
 router.get("/sellerData/:id", getSeller)
+router.post("/updateSeller/:id", updateSeller)
 
 
 // Product routes

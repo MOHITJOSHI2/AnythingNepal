@@ -11,6 +11,11 @@ const Contact = () => {
   const [loading, setLoading] = useState(true);
 
   const id = localStorage.getItem("seller");
+  useEffect(() => {
+    if (!localStorage.getItem("seller")) {
+      navigate("/");
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

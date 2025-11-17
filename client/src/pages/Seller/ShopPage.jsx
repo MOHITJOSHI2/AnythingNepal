@@ -26,7 +26,7 @@ const ShopPage = () => {
             window.location.reload();
           }
         } else {
-          console.log(res.err);
+          console.log(res.shopMessage || res.err);
         }
       }
       checkShop();

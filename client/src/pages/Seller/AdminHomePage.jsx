@@ -23,8 +23,6 @@ const AdminHomePage = () => {
     }
   }, []);
 
-  //bg-cyan-900 bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')]
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {

@@ -77,11 +77,15 @@ exports.findShopBySellerId = async (req, res) => {
     const userId = decryptId(req.params.id)
     try {
         const shopData = await shop.findOne({ shopKeeper: userId })
-        const encryptedShopId = ecnryptId(shopData._id)
         if (shopData) {
-            res.status(200).json({ message: "User found", encryptedShopId })
+            const encryptedShopId = ecnryptId(shopData._id)
+            if (encryptedShopId) {
+                res.status(200).json({ message: "User found", encryptedShopId })
+            } else {
+                res.status(404).json({ err: "User cannot be found" })
+            }
         } else {
-            res.status(404).json({ err: "cannot find shop that belongs to this seller" })
+            res.status(400).json({ shopMessage: "cannot find shop that belongs to this seller" })
         }
     } catch (error) {
         console.log("Error at find shop by seller id \n", error)

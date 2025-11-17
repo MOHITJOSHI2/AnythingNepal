@@ -10,6 +10,12 @@ const AVProduct = () => {
   const [productData, setProductData] = useState([]);
 
   useEffect(() => {
+    if (!localStorage.getItem("seller")) {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
     if (!id) {
       navigate("/");
     } else {
