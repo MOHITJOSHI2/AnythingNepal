@@ -7,15 +7,15 @@ async function sendMail(email, subject, body) {
         port: 587,
         secure: false,
         auth: {
-            user: "specturet@gmail.com",
-            pass: "cgob oiyw tzjv jibb" //app Generated password
+            user: "Your gmail", // SMTP gmail
+            pass: "your app generated Password" //app Generated password
         }
     })
 
     const mailOptions = {
-        from: "specturet@gmail.com",
-        to: "itsspyner@gmail.com",
-        replyTo: email,
+        from: "SMTP gmail you set",
+        to: "where you want to reveive it",
+        replyTo: email, //Client gmail
         subject: subject,
         text: body
     };
