@@ -1,2 +1,2 @@
 # AnythingNepal
-An Online e-commerce project
+An Online e-commerce project made with MERN
