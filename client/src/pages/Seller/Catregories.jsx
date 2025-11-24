@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Product from "../../components/Sellers/Product";
-import NavBar from "../../components/Users/NavBar";
+import NavBar from "../../components/Sellers/NavBar";
 import { useNavigate } from "react-router-dom";
 
 const Categories = () => {
@@ -60,9 +60,7 @@ const Categories = () => {
         Signup={id ? "Categories" : "Signup/login"}
         Name={"Mohit Joshi"}
         Id={id}
-        Contact1={"#footer"}
         Products1={`/products/${id}`}
-        Shop1={"/shop"}
         Signup1={id ? "/categories" : "/signup-login"}
       />
       <div className="p-4 bg-white">
@@ -76,16 +74,18 @@ const Categories = () => {
                 <h2 className="text-2xl font-bold text-center mb-4">
                   Art and Artitecture
                 </h2>
-                <div className="flex overflow-x-auto gap-4 pb-2">
+                <div className="flex overflow-x-scroll gap-4 pb-2">
                   {artProducts.map((elem) => (
-                    <Product
-                      key={elem._id}
-                      productId={elem._id}
-                      src={elem.productImage}
-                      name={elem.productName}
-                      price={elem.productPrice}
-                      quantity={elem.productQuantity}
-                    />
+                    <div className="flex-shrink-0">
+                      <Product
+                        key={elem._id}
+                        productId={elem._id}
+                        src={elem.productImage}
+                        name={elem.productName}
+                        price={elem.productPrice}
+                        quantity={elem.productQuantity}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -95,16 +95,18 @@ const Categories = () => {
             {clothesProducts.length > 0 && (
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-center mb-4">Clothes</h2>
-                <div className="flex overflow-x-auto gap-4 pb-2">
+                <div className="flex flex-nowrap overflow-x-auto gap-4 pb-2">
                   {clothesProducts.map((elem) => (
-                    <Product
-                      key={elem._id}
-                      productId={elem._id}
-                      src={elem.productImage}
-                      name={elem.productName}
-                      price={elem.productPrice}
-                      quantity={elem.productQuantity}
-                    />
+                    <div className="flex-shrink-0">
+                      <Product
+                        key={elem._id}
+                        productId={elem._id}
+                        src={elem.productImage}
+                        name={elem.productName}
+                        price={elem.productPrice}
+                        quantity={elem.productQuantity}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -116,7 +118,7 @@ const Categories = () => {
                 <h2 className="text-2xl font-bold text-center mb-4">Pottery</h2>
                 <div className="flex overflow-x-auto gap-4 pb-2">
                   {potteryProducts.map((elem) => (
-                    <div key={elem._id} className="flex-shrink-0 w-58 mr-10">
+                    <div key={elem._id} className="flex-shrink-0">
                       <Product
                         productId={elem._id}
                         src={elem.productImage}

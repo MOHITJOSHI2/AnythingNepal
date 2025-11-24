@@ -87,7 +87,11 @@ exports.sellerLogin = async (req, res) => {
         if (seller) {
             if (seller.password === password) {
                 const id = ecnryptId(seller.id)
-                res.status(200).json({ message: "Successfully log onto account", id })
+                const data = {
+                    id: id,
+                    fullName: seller.fullName
+                }
+                res.status(200).json({ message: "Successfully log onto account", data })
             } else {
                 res.status(400).json({ err: "Password didn't match" })
             }

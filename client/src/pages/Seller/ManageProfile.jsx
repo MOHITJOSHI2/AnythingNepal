@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash, FaShareAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import NavBar from "../../components/Users/NavBar";
+import NavBar from "../../components/Sellers/NavBar";
 import UpdatePersonalInfo from "../../components/Sellers/UpdatePersonalInfo";
 
 const ManageProfile = () => {
@@ -153,9 +153,7 @@ const ManageProfile = () => {
             Signup={id ? "Categories" : "Signup/login"}
             Name={"Mohit Joshi"}
             Id={id}
-            Contact1={"#footer"}
             Products1={`/products/${id}`}
-            Shop1={"/shop"}
             Signup1={id ? "/categories" : "/signup-login"}
           />
 
@@ -241,6 +239,7 @@ const ManageProfile = () => {
                   if (ans && ans.toLowerCase() === "y") {
                     localStorage.removeItem("seller");
                     localStorage.removeItem("shop");
+                    localStorage.removeItem("name");
                     navigate("/");
                   } else if (ans && ans.toLowerCase() === "n") {
                     return;

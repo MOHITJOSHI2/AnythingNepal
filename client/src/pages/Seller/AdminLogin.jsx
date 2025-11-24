@@ -45,8 +45,9 @@ const AdminLogin = () => {
       const res = await req.json();
       if (req.ok) {
         console.log(res.message);
-        localStorage.setItem("seller", res.id);
-        navigate(`/adminHomePage/${res.id}`);
+        localStorage.setItem("seller", res.data.id);
+        localStorage.setItem("name", res.data.fullName);
+        navigate(`/adminHomePage/${res.data.id}`);
       } else {
         setErrors({
           email: res.err,

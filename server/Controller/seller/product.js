@@ -1,6 +1,7 @@
 const { decryptId } = require('../../Functions/sellers/idEncryption')
 const Products = require('../../Models/sellers/products')
 const Seller = require('../../Models/sellers/sellers')
+const Shop = require('../../Models/sellers/shop')
 const fs = require('fs')
 
 exports.addProduct = async (req, res) => {
@@ -8,8 +9,8 @@ exports.addProduct = async (req, res) => {
     const { productName, productPrice, productQuantity, productCategory, productDescription } = req.body
     try {
         const id = decryptId(req.params.id)
-        const seller = await Seller.findOne({ _id: id })
-        if (seller) {
+        const shop = await Shop.findOne({ _id: id })
+        if (shop) {
             const saveData = new Products({
                 productName: productName,
                 productImage: productImage,

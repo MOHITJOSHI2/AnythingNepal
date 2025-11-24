@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../../components/Users/NavBar";
+import NavBar from "../../components/Sellers/NavBar";
 import Box from "../../components/Users/Box";
 import BigBox from "../../components/App_components/BigBox";
 import Footer from "../../components/Users/Footer";
@@ -16,30 +16,59 @@ const AdminHomePage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
+  let shopId = localStorage.getItem("shopId");
+
+  useEffect(() => {
+    if (!shopId) {
+      async function getShopId() {
+        const req = await fetch(
+          `${import.meta.env.VITE_localhost}/seller/getShopBySellerId/${id}`,
+          {
+            method: "GET",
+          }
+        );
+        const res = await req.json();
+        if (req.ok) {
+          localStorage.setItem("shop", res.encryptedShopId);
+          setLoading(false);
+        } else {
+          console.log(res.message || res.shopMessage);
+          setLoading(false);
+        }
+      }
+      getShopId();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (shopId) {
+      const fetchProduct = async () => {
+        try {
+          const req = await fetch(
+            `${import.meta.env.VITE_localhost}/seller/getProduct/${shopId}`
+          );
+          const res = await req.json();
+
+          if (req.ok) {
+            setProduct(res.message);
+            setLoading(false);
+          } else {
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error fetching product:", error);
+          setLoading(false);
+        }
+      };
+
+      fetchProduct();
+    }
+  }, []);
 
   useEffect(() => {
     if (!id || !localStorage.getItem("seller")) {
       navigate("/");
     }
-  }, []);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const req = await fetch(
-          `${import.meta.env.VITE_localhost}/seller/getProduct/${id}`
-        );
-        const res = await req.json();
-
-        if (req.ok) setProduct(res.message);
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
   }, []);
 
   if (loading) {
@@ -68,9 +97,7 @@ const AdminHomePage = () => {
         Signup={id ? "Categories" : "Signup/login"}
         Name={"Mohit Joshi"}
         Id={id}
-        Contact1={"#footer"}
         Products1={`/products/${id}`}
-        Shop1={"/shop"}
         Signup1={id ? "/categories" : "/signup-login"}
       />
 
@@ -131,7 +158,7 @@ const AdminHomePage = () => {
         </motion.div>
 
         <div className="relative z-10 w-full md:w-[60%] flex justify-center">
-          <Carousal product={product} />
+          <Carousal shopId={shopId} product={product} />
         </div>
       </section>
 

@@ -34,7 +34,7 @@ const MyRoutes = () => {
           <Route path="/pages/sellers/sellerLogin" element={<AdminLogin />} />
           <Route path="/pages/users/userSignup" element={<UserSignup />} />
           <Route path="/pages/sellers/sellerSignup" element={<AdminSignup />} />
-          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/shop/:id" element={<ShopPage />} />
           <Route
             path="/pages/sellers/manageProfile/:id"
             element={<ManageProfile />}

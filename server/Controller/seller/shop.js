@@ -85,7 +85,7 @@ exports.findShopBySellerId = async (req, res) => {
                 res.status(404).json({ err: "User cannot be found" })
             }
         } else {
-            res.status(400).json({ shopMessage: "cannot find shop that belongs to this seller" })
+            res.status(404).json({ shopMessage: "cannot find shop that belongs to this seller" })
         }
     } catch (error) {
         console.log("Error at find shop by seller id \n", error)

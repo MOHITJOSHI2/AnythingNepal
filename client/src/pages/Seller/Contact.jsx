@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-import NavBar from "../../components/Users/NavBar";
+import NavBar from "../../components/Sellers/NavBar";
 
 const Contact = () => {
   const [emailData, setEmailData] = useState({
@@ -9,13 +9,19 @@ const Contact = () => {
     body: "",
   });
   const [loading, setLoading] = useState(true);
+  let id = "";
 
-  const id = localStorage.getItem("seller");
   useEffect(() => {
     if (!localStorage.getItem("seller")) {
       navigate("/");
     }
   }, []);
+
+  if (localStorage.getItem("seller")) {
+    id = localStorage.getItem("seller");
+  } else {
+    navigate("/");
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,9 +71,7 @@ const Contact = () => {
         Signup={id ? "Categories" : "Signup/login"}
         Name={"Mohit Joshi"}
         Id={id}
-        Contact1={"#footer"}
         Products1={`/products/${id}`}
-        Shop1={"/shop"}
         Signup1={id ? "/categories" : "/signup-login"}
       />
 

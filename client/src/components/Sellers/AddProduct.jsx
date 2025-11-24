@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = ({ id }) => {
   const productCategory = ["Clothes", "Art and Architecture", "Pottery"];
   const [img, setImg] = useState(null);
+  const navigate = useNavigate();
   const [productData, setProductData] = useState({
     photo: "",
     productName: "",
@@ -11,6 +13,7 @@ const AddProduct = ({ id }) => {
     productCategory: "",
     productDescription: "",
   });
+  const shopId = localStorage.getItem("shop");
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -35,6 +38,10 @@ const AddProduct = ({ id }) => {
       console.log("Error occurred");
       return;
     }
+
+    if (!shopId) {
+      navigate("/shop/'");
+    }
   }, [id]);
 
   async function sendData() {
@@ -51,7 +58,7 @@ const AddProduct = ({ id }) => {
 
     try {
       const req = await fetch(
-        `${import.meta.env.VITE_localhost}/seller/addProduct/${id}`,
+        `${import.meta.env.VITE_localhost}/seller/addProduct/${shopId}`,
         {
           method: "POST",
           body: formData,

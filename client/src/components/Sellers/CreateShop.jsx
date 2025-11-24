@@ -9,6 +9,7 @@ const CreateShop = ({ id }) => {
     shopDescription: "",
   });
   const [shopNameErr, setShopNameErr] = useState("");
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -50,6 +51,7 @@ const CreateShop = ({ id }) => {
       const res = await req.json();
       if (req.ok) {
         localStorage.setItem("shop", res.shopId);
+        navigate(`/shop/${res.shopId}`);
         window.location.reload();
       } else {
         console.log(res.err);
@@ -78,6 +80,7 @@ const CreateShop = ({ id }) => {
               src={img}
               alt="Preview"
               className="w-full h-full object-cover rounded-2xl"
+              accept=".jpg, .jpeg, .png"
             />
           ) : (
             <span className="text-gray-400 text-lg font-medium">
