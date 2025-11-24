@@ -149,7 +149,7 @@ const AdminHomePage = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
           <h2 className="text-4xl md:text-5xl font-extrabold text-[#ffb347] mb-6 drop-shadow-[0_0_25px_rgba(255,140,0,0.4)]">
-            Some of Our Products
+            Some of your Products
           </h2>
           <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-md">
             Explore unique handcrafted products made in Nepal — where tradition
