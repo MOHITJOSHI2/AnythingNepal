@@ -13,7 +13,7 @@ const app = express()
 // Server modifications
 app.use(express.json())
 app.use(cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true,
 }))
 app.use("/assets", express.static(path.join(__dirname, "assets")));

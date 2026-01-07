@@ -54,11 +54,14 @@ const HandleCorrections1 = (data) => {
 
 const HandleCorrections2 = (data) => {
     const { email, password } = data
+    const errors = {}
     if (!email) {
         errors.email = "Email cannot be null"
     }
     if (!password) {
         errors.password = "Password cannot be null"
     }
+    return errors
 }
+
 export default { HandleCorrections1, HandleCorrections2 };

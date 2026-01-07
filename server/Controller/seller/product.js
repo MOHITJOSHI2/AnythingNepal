@@ -77,6 +77,7 @@ exports.getProduct = async (req, res) => {
     }
 }
 
+
 exports.getTotalProduct = async (req, res) => {
     try {
         const product = await Products.find()

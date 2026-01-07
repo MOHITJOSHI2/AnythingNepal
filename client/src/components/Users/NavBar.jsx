@@ -1,173 +1,209 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiHeart, FiMenu, FiX } from "react-icons/fi";
 import { BsBasket } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-const NavBar = ({
-  Shop,
-  Products,
-  Signup,
-  Contact,
-  Name,
-  Id,
-  Products1,
-  Signup1,
-}) => {
+const NavBar = ({ Messages, Products, Signup, Contact }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [productsName, setProductsName] = useState([]);
   const navigate = useNavigate();
-
+  const Id = localStorage.getItem("user");
   const name = localStorage.getItem("name");
 
-  const sellerShopId = localStorage.getItem("shop");
-  const dynamicShopLink = sellerShopId ? `/shop/${sellerShopId}` : "/shop/'";
+  // FIX 1: Prevent body from scrolling when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [menuOpen]);
 
-  const homeNav =
-    "sticky top-0 z-50 bg-gradient-to-b from-[#0d0d0d]/70 via-[#1a0e0e]/60 to-[#260505]/70 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.4)] border-b border-[#ffb347]/0";
-  const otherNav =
-    "sticky top-0 z-50 bg-gray-900 backdrop-blur-lg shadow-[0_4px_25px_rgba(0,0,0,0.35)] border-b border-[#333]/40";
-
-  const location = window.location.href;
-  const navCss =
-    location.includes("/adminHomePage") || location.includes("/userHomePage")
-      ? homeNav
-      : otherNav;
+  const Nav =
+    "sticky mt-3 mx-3 rounded-3xl py-1 top-0 z-50 bg-[#90AB8B] backdrop-blur-lg shadow-lg text-lg";
 
   const linkStyle =
-    "text-white/90 hover:text-amber-400 cursor-pointer text-lg transition-all duration-200 ease-in-out";
+    "relative text-white/80 hover:text-white cursor-pointer text-lg transition-colors duration-200 after:content-[''] after:absolute after:left-1/2 after:bottom-[-4px] after:h-[2px] after:w-0 after:bg-white after:-translate-x-1/2 after:transition-all after:duration-300 hover:after:w-full";
+
+  useEffect(() => {
+    async function getSearchData() {
+      if (!search) {
+        setProductsName([]);
+        return;
+      }
+      try {
+        const req = await fetch(
+          `${
+            import.meta.env.VITE_localhost
+          }/user/getProductSearch?query=${search}`
+        );
+        const res = await req.json();
+        if (req.ok) setProductsName(res.data);
+      } catch (err) {
+        console.error("Search fetch error:", err);
+      }
+    }
+    getSearchData();
+  }, [search]);
 
   return (
-    <nav className={navCss}>
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
+    <nav className={Nav}>
+      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between ">
+        {/* LOGO */}
         <div
-          className="flex items-center gap-2 cursor-pointer"
+          className="cursor-pointer select-none text-xl font-bold bg-gradient-to-r from-gray-700 to-gray-800 bg-clip-text text-transparent max-sm:hidden mr-10"
           onClick={() => navigate("/")}
         >
-          <span className="text-2xl">🕉️</span>
-          <span className="text-xl font-bold bg-gradient-to-r from-amber-300 to-red-400 bg-clip-text text-transparent">
-            AnythingNepal
-          </span>
+          AnythingNepal
         </div>
 
         {/* DESKTOP MENU */}
-        <ul className="hidden md:flex items-center space-x-10 font-medium">
-          <li className={linkStyle} onClick={() => navigate(dynamicShopLink)}>
-            {Shop}
+        <ul className="hidden min-[1485px]:flex items-center space-x-10 font-medium">
+          <li className={linkStyle} onClick={() => navigate("")}>
+            {Messages}
           </li>
-
-          <li className={linkStyle} onClick={() => navigate(Products1)}>
+          <li className={linkStyle} onClick={() => navigate("/showProducts")}>
             {Products}
           </li>
-
-          <li className={linkStyle} onClick={() => navigate(Signup1)}>
+          <li
+            className={linkStyle}
+            onClick={() => navigate("/productCategories")}
+          >
             {Signup}
           </li>
-
           <li className={linkStyle} onClick={() => navigate("/contact")}>
             {Contact}
           </li>
         </ul>
 
-        {/* DESKTOP ICONS */}
-        <div className="hidden md:flex items-center gap-6 text-white/90">
-          {Shop !== "ManageShop" && (
-            <>
-              <div className="relative hover:text-amber-400 cursor-pointer transition">
-                <FiHeart size={22} />
-                <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  3
-                </span>
-              </div>
+        {/* SEARCH BAR */}
+        <div className="flex-1 flex justify-center px-4 max-sm:px-1">
+          <div className="relative w-full max-w-[380px]">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search products..."
+              className="rounded-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-amber-400 px-4 py-2 pr-10 transition-all duration-200 w-full"
+            />
+            <button
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
+              onClick={() =>
+                search && navigate(`/showProducts?query=${search}`)
+              }
+            >
+              🔍
+            </button>
 
-              <div className="relative hover:text-amber-400 cursor-pointer transition">
-                <BsBasket size={22} />
-                <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  1
-                </span>
+            {/* FIX 2: Added 'scrollbar-hide' and ensured no horizontal overflow */}
+            {search && productsName.length > 0 && (
+              <div className="absolute top-full mt-2 left-0 w-full bg-white rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto border border-gray-200">
+                {productsName.map((elem) => (
+                  <p
+                    key={elem.item._id}
+                    className="px-4 py-3 text-gray-800 font-semibold hover:bg-amber-50 cursor-pointer transition-colors duration-200 truncate"
+                    onClick={() => {
+                      setSearch(elem.item.productName);
+                      navigate(`/viewProduct/${elem.item._id}`);
+                    }}
+                  >
+                    {elem.item.productName}
+                  </p>
+                ))}
               </div>
-            </>
-          )}
-
-          <div
-            className="ml-4 font-semibold cursor-pointer text-amber-300 hover:text-amber-400 transition"
-            onClick={() => navigate(`/pages/sellers/manageProfile/${Id}`)}
-          >
-            {name}
+            )}
           </div>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
+        {/* DESKTOP ICONS */}
+        <div className="hidden min-[1146px]:flex items-center gap-6 text-white/90">
+          <div
+            className="relative hover:text-amber-400 cursor-pointer transition"
+            onClick={() => navigate("/cart")}
+            title="Cart"
+          >
+            <BsBasket size={22} />
+            <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              1
+            </span>
+          </div>
+          <div
+            title="Profile"
+            className="font-semibold min-w-[50px] text-center p-1 border border-[#EBF4DD] rounded-full cursor-pointer hover:bg-[#EBF4DD] text-gray-800/80 transition whitespace-nowrap"
+            onClick={() => navigate("/userProfile")}
+          >
+            {name
+              ?.split(" ")
+              .map((n) => n[0])
+              .join("")}
+          </div>
+        </div>
+
+        {/* HAMBURGER */}
         <button
-          className="md:hidden text-3xl text-white"
+          className="min-[1146px]:hidden flex text-3xl text-white ml-3"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <FiX /> : <FiMenu />}
         </button>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU - FIX 3: Optimized height and overflow */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            key="mobileMenu"
-            initial={{ opacity: 0, scaleY: 0 }}
-            animate={{ opacity: 1, scaleY: 1 }}
-            exit={{ opacity: 0, scaleY: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden origin-top bg-black/60 backdrop-blur-xl flex flex-col items-center space-y-5 py-6 border-t border-white/10"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="min-[1146px]:hidden overflow-hidden bg-black/90 backdrop-blur-xl border-t border-white/10"
           >
-            {/* MOBILE LINKS */}
-            {[
-              { text: Shop, to: dynamicShopLink },
-              { text: Products, to: Products1 },
-              { text: Signup, to: Signup1 },
-              { text: Contact, to: "/contact" },
-            ].map((link, idx) => (
-              <li
-                key={idx}
-                className={linkStyle}
+            <ul className="flex flex-col items-center space-y-6 py-8 max-h-[80vh] overflow-y-auto">
+              {[
+                { text: Messages, to: "" },
+                { text: Products, to: "/showProducts" },
+                { text: Signup, to: "/productCategories" },
+                { text: Contact, to: "/contact" },
+              ].map((link, idx) => (
+                <li
+                  key={idx}
+                  className={linkStyle}
+                  onClick={() => {
+                    navigate(link.to);
+                    setMenuOpen(false);
+                  }}
+                >
+                  {link.text}
+                </li>
+              ))}
+
+              <div
+                className="relative hover:text-amber-400 cursor-pointer transition pt-4"
                 onClick={() => {
-                  navigate(link.to);
+                  navigate("/cart");
                   setMenuOpen(false);
                 }}
               >
-                {link.text}
-              </li>
-            ))}
-
-            {/* MOBILE ICONS & PROFILE */}
-            <div className="flex flex-col items-center space-y-4 mt-4 text-white text-lg">
-              <div className="flex gap-6">
-                {Shop !== "ManageShop" && (
-                  <>
-                    <div className="relative hover:text-amber-400 cursor-pointer transition">
-                      <FiHeart size={22} />
-                      <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                        3
-                      </span>
-                    </div>
-
-                    <div className="relative hover:text-amber-400 cursor-pointer transition">
-                      <BsBasket size={22} />
-                      <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                        1
-                      </span>
-                    </div>
-                  </>
-                )}
+                <BsBasket size={30} className="text-white" />
+                <span className="absolute top-2 -right-3 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  1
+                </span>
               </div>
 
               <div
-                className="font-semibold text-amber-300 hover:text-amber-400 cursor-pointer transition"
+                className="font-semibold text-amber-300 hover:text-amber-400 text-lg pb-4"
                 onClick={() => {
-                  navigate(`/pages/sellers/manageProfile/${Id}`);
+                  navigate(`/userProfile`);
                   setMenuOpen(false);
                 }}
               >
                 {name}
               </div>
-            </div>
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>

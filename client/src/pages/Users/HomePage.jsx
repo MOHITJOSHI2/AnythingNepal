@@ -1,199 +1,435 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../components/Users/NavBar";
+import ComponentBox from "../../components/Users/ComponentBox";
+import pottery from "../../assets/pottery.png";
+import clothes from "../../assets/clothes.png";
+import handicraft from "../../assets/handicraft.png";
+import art from "../../assets/art.png";
 import BigBox from "../../components/App_components/BigBox";
 import Footer from "../../components/Users/Footer";
 import bg from "../../assets/bg.png";
 import { motion } from "motion/react";
-import Carousal from "../../components/App_components/Carousal";
-import Box from "../../components/Users/Box";
 import img1 from "../../assets/potter.jpg";
 import img2 from "../../assets/items.jpg";
+import { useNavigate, useParams } from "react-router-dom";
+import Product from "../../components/Users/Product";
 
 const HomePage = () => {
-  const id = "";
-  const product = [];
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [loading, setloading] = useState(true);
+  const [product, setProduct] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+    },
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
+
+  const slideInRight = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6 },
+    },
+  };
+
+  useEffect(() => {
+    if (!localStorage.getItem("user") && id) {
+      navigate("/pages/users/userLogin");
+    }
+  }, []);
+
+  useEffect(() => {
+    async function fetchdata() {
+      const req = await fetch(
+        `${import.meta.env.VITE_localhost}/user/getFilteredProducts`,
+        {
+          method: "GET",
+        }
+      );
+      const res = await req.json();
+      if (req.ok) {
+        console.log(res.products);
+        setloading(false);
+        setProduct(res.products);
+      } else {
+        console.log(res.err);
+        setloading(false);
+      }
+    }
+    fetchdata();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen bg-amber-200 text-2xl font-bold text-center">
+        Loading....
+      </div>
+    );
+  }
+
+  const categories = [
+    "Art and Artitecture",
+    "Pottery",
+    "Handicraft",
+    "Clothes",
+  ];
+
+  const pic = [art, pottery, handicraft, clothes];
+
   return (
-    <div
-      className="text-gray-100 min-h-screen bg-fixed bg-center bg-cover bg-no-repeat overflow-hidden"
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* Navbar */}
+    <div className="min-h-screen bg-[#EBF4DD] text-stone-800 font-sans overflow-x-hidden">
       <NavBar
         Contact={"Contact"}
         Products={"Products"}
-        Shop={"ManageShop"}
-        Signup={id ? "Categories" : "Signup/login"}
-        Name={"Mohit Joshi"}
+        Messages={"Messages"}
+        Signup={"Categories"}
         Id={id}
-        Products1={`/products/${id}`}
         Shop1={"/shop"}
-        Signup1={id ? "/categories" : "/signup-login"}
       />
 
-      {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center min-h-[100vh] px-6 text-center bg-cover bg-center bg-no-repeat shadow-[0_40px_60px_-30px_rgba(75, 20, 10, 1)]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d]/50 via-[#1a0e0e]/40 to-[#260505]/0"></div>
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-12 mt-[10%] md:mt-[6%]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+          {/* Text Content: Order priority 2 on mobile, 1 on desktop */}
+          <section className="order-1 lg:col-span-5 px-2 md:px-6">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="space-y-6 md:space-y-10"
+            >
+              {/* Headline & Subtext */}
+              <div>
+                <motion.h2
+                  variants={fadeInUp}
+                  className="text-5xl md:text-6xl font-black text-stone-900 leading-none tracking-tighter"
+                >
+                  NEPAL <br />
+                  <span className="text-red-700">CURATED.</span>
+                </motion.h2>
 
-        <motion.h1
-          className="relative z-10 text-6xl md:text-7xl font-extrabold bg-gradient-to-r from-[#ffb347] via-[#ff6a00] to-[#ff914d] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(255,138,76,0.4)]"
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-          viewport={{ once: true }}
-        >
-          Discover Nepali Heritage
-        </motion.h1>
+                <motion.p
+                  variants={fadeInUp}
+                  className="mt-4 text-lg md:text-xl text-stone-600 font-medium"
+                >
+                  Handpicked. Authentic. Direct from the source.
+                </motion.p>
+              </div>
 
-        <motion.p
-          className="relative z-10 max-w-3xl text-[#ffddb3]/90 mt-6 text-lg md:text-xl leading-relaxed"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-          viewport={{ once: true }}
-        >
-          Explore authentic Nepali-made products, crafts, and traditions. Every
-          purchase supports artisans and keeps our culture alive.
-        </motion.p>
+              {/* Feature List with Border Animation */}
+              <motion.div
+                variants={fadeInUp}
+                className="relative grid grid-cols-1 gap-4 md:gap-6 pl-6"
+              >
+                {/* Animated Border Line */}
+                <motion.div
+                  initial={{ scaleY: 0 }}
+                  whileInView={{ scaleY: 1 }}
+                  transition={{ duration: 1, delay: 0.8 }}
+                  className="absolute left-0 top-0 bottom-0 w-[2px] bg-stone-300 origin-top"
+                />
 
-        <motion.button
-          onClick={() => navigate("/categories")}
-          className="relative z-10 mt-8 px-10 py-4 bg-gradient-to-r from-[#ff6a00] to-[#ffb347] rounded-full text-black font-semibold shadow-[0_0_25px_rgba(255,140,0,0.5)] hover:scale-105 hover:shadow-[0_0_40px_rgba(255,180,50,0.8)] transition-all duration-300"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeInOut" }}
-          viewport={{ once: true }}
-        >
-          Explore Categories
-        </motion.button>
-      </section>
+                <motion.div variants={slideInRight}>
+                  <h4 className="font-bold text-stone-900 text-base">
+                    100% Original
+                  </h4>
+                  <p className="text-xs text-stone-500 uppercase tracking-wide">
+                    Verified Artisan Work
+                  </p>
+                </motion.div>
 
-      <section className="relative flex flex-col md:flex-row items-center justify-center w-full px-6 py-20 text-center bg-cover bg-center bg-no-repeat overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d]/0 via-[#1a0e0e]/40 to-[#260505]/50"></div>
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-[#260505]"></div>
+                <motion.div variants={slideInRight}>
+                  <h4 className="font-bold text-stone-900 text-base">
+                    Eco-Conscious
+                  </h4>
+                  <p className="text-xs text-stone-500 uppercase tracking-wide">
+                    Sustainable Packaging
+                  </p>
+                </motion.div>
+              </motion.div>
 
-        <motion.div
-          className="relative z-10 flex flex-col items-center justify-center md:items-start md:text-left text-center w-full md:w-[40%] mb-10 md:mb-0"
-          initial={{ opacity: 0, y: -40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[#ffb347] mb-6 drop-shadow-[0_0_25px_rgba(255,140,0,0.4)]">
-            Some of Our Products
-          </h2>
-          <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-md">
-            Explore unique handcrafted products made in Nepal — where tradition
-            meets creativity.
+              {/* CTA Button with Hover Effects */}
+              <motion.button
+                variants={fadeInUp}
+                whileHover={{ x: 5 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-3 text-lg font-bold group hover:text-red-700 transition-colors"
+              >
+                <span>Start Exploring</span>
+                <motion.div
+                  whileHover={{ rotate: "360deg" }}
+                  transition={{ ease: "easeInOut", duration: 0.4 }}
+                  className="w-10 h-10 rounded-full bg-stone-900 text-white flex items-center justify-center group-hover:bg-red-700 transition-all shadow-md group-hover:shadow-red-200"
+                >
+                  <motion.svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={3}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                    />
+                  </motion.svg>
+                </motion.div>
+              </motion.button>
+            </motion.div>
+          </section>
+
+          <section className="order-2 lg:col-span-7 relative h-[400px] md:h-[550px] flex items-center justify-center perspective-1000">
+            {product.map((item, index) => {
+              const isActive = index === activeIndex;
+              const isPrev =
+                index === (activeIndex - 1 + product.length) % product.length;
+              const isNext = index === (activeIndex + 1) % product.length;
+
+              let transformStyle = "scale-0 opacity-0";
+
+              // Mobile specific transforms (hidden/tucked) vs Desktop
+              if (isActive) {
+                transformStyle =
+                  "translate-z-0 scale-110 md:scale-125 opacity-100 z-30 shadow-2xl";
+              } else if (isPrev) {
+                // On mobile, we move them less (-translate-x-20) to stay on screen
+                transformStyle =
+                  "-translate-x-20 md:-translate-x-44 -rotate-y-15 scale-90 md:scale-100 opacity-40 md:opacity-50 z-10 shadow-lg";
+              } else if (isNext) {
+                transformStyle =
+                  "translate-x-20 md:translate-x-44 rotate-y-15 scale-90 md:scale-100 opacity-400 md:opacity-50 z-10 shadow-lg";
+              }
+
+              return (
+                <div
+                  key={item._id}
+                  onClick={() => setActiveIndex(index)}
+                  className={`absolute w-56 h-80 md:w-72 md:h-96 transition-all duration-700 ease-in-out cursor-pointer overflow-hidden rounded-3xl bg-white border border-stone-200 ${transformStyle}`}
+                >
+                  <img
+                    src={`${import.meta.env.VITE_localhost}/assets/${
+                      item.productImage
+                    }`}
+                    alt={item.productName}
+                    className="h-2/3 w-full object-cover"
+                  />
+                  <div className="p-4 md:p-6">
+                    <h3 className="font-bold text-sm md:text-lg truncate">
+                      {item.productName}
+                    </h3>
+                    <p className="text-red-800 font-semibold text-xs md:text-base">
+                      Rs: {item.productPrice}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Controls - Positioned Relative to the Section height */}
+            <div className="absolute -bottom-20 md:-bottom-20 flex gap-6">
+              <button
+                onClick={() =>
+                  setActiveIndex(
+                    (prev) => (prev - 1 + product.length) % product.length
+                  )
+                }
+                className="p-4 bg-white/80 backdrop-blur-sm rounded-full shadow-lg hover:bg-stone-900 hover:text-white transition-all active:scale-90"
+              >
+                ←
+              </button>
+              <button
+                onClick={() =>
+                  setActiveIndex((prev) => (prev + 1) % product.length)
+                }
+                className="p-4 bg-white/80 backdrop-blur-sm rounded-full shadow-lg hover:bg-stone-900 hover:text-white transition-all active:scale-90"
+              >
+                →
+              </button>
+            </div>
+          </section>
+        </div>
+      </main>
+      <section className="mt-[13%] flex flex-col">
+        <div className="text-center">
+          <p className="text-xl font-semibold text-black/80">
+            Explore Categories
           </p>
-        </motion.div>
-
-        <div className="relative z-10 w-full md:w-[60%] flex justify-center">
-          <Carousal product={product} />
+        </div>
+        <div className="flex flex-row justify-center flex-wrap gap-10 mt-5 mb-5 w-full">
+          {categories.map((elem, index) => (
+            <ComponentBox key={index} name={elem} src={pic[index]} />
+          ))}
         </div>
       </section>
+      <section className="w-full bg-[#5A7863]/95 backdrop-blur-md p-6 md:p-16 mt-[10%] shadow-[0_-15px_30px_-10px_rgba(90,120,99,0.4)]">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="relative flex flex-col lg:flex-row items-center gap-16 p-8 md:p-12 mb-12">
+            <div className="absolute top-0 left-0 w-full h-full bg-white/5 rounded-[4rem] -z-10 border border-white/10 shadow-inner"></div>
 
-      {/* Featured Products Section */}
-      <section className="py-24 bg-gradient-to-b from-[#260505] via-[#3b0a0a] to-[#1a0000] ">
-        <div className="text-center px-6">
-          <motion.h2
-            className="text-5xl font-extrabold text-[#ffb347] mb-12 drop-shadow-[0_0_25px_rgba(255,140,0,0.4)]"
-            initial={{ opacity: 0, y: -50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
-            viewport={{ once: true }}
-          >
-            Featured Products
-          </motion.h2>
+            <div className="w-full lg:w-[45%] group perspective-1000">
+              <div className="relative">
+                <div className="absolute inset-0 bg-white/5 blur-3xl rounded-full scale-90 group-hover:scale-110 transition-all duration-1000"></div>
+                <img
+                  src={`${import.meta.env.VITE_localhost}/assets/${
+                    product[0].productImage
+                  }`}
+                  alt="Featured Collection"
+                  className="relative z-10 w-full h-[55vh] object-cover rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transform transition-all duration-700 group-hover:rotate-y-6 group-hover:-translate-y-4"
+                />
+              </div>
+            </div>
 
-          <div className="flex flex-wrap justify-center ">
-            {["bowl.glb", "kukri.glb", "karwa.glb", "muda.glb"].map(
-              (src, i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                  viewport={{ once: true }}
-                  className="transform-gpu"
-                >
-                  <Box
-                    name={
-                      [
-                        "Tibetan Singing Bowl",
-                        "Traditional Dhaka Topi",
-                        "Traditional Karwa",
-                        "Traditional Muda",
-                      ][i]
-                    }
-                    price={["Rs 2200", "Rs 1800", "Rs 4500", "Rs 3300"][i]}
-                    src={src}
-                  />
-                </motion.div>
-              )
-            )}
+            <div className="flex-1 text-white space-y-8">
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="h-[1px] w-12 bg-red-500"></span>
+                  <span className="text-red-400 uppercase tracking-[0.4em] text-[10px] font-black">
+                    Featured Masterpiece
+                  </span>
+                </div>
+                <h2 className="text-5xl md:text-7xl font-serif font-bold leading-none tracking-tight">
+                  {product[0].productName}
+                </h2>
+                <p className="mt-6 text-white/60 text-lg max-w-lg font-light leading-relaxed">
+                  A testament to Nepali heritage, crafted with soul and
+                  centuries-old tradition.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-12 items-end">
+                <div className="space-y-1">
+                  <p className="text-white/40 uppercase tracking-widest text-xs">
+                    Availability
+                  </p>
+                  <p className="text-4xl font-light italic">
+                    {product[0].productQuantity}{" "}
+                    <span className="text-sm not-italic opacity-50">Units</span>
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-white/40 uppercase tracking-widest text-xs">
+                    Investment
+                  </p>
+                  <p className="text-6xl font-black tracking-tighter text-white">
+                    <span className="text-2xl font-normal opacity-50 mr-2">
+                      Rs.
+                    </span>
+                    {product[0].productPrice.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-8 flex">
+                <button className="px-12 py-5 bg-white text-stone-900 font-bold rounded-2xl hover:bg-red-800 hover:text-white transition-all shadow-xl active:scale-95 uppercase text-xs tracking-widest">
+                  Acquire Now
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="mt-20 mx-auto w-48 h-1 bg-gradient-to-r from-[#ff6a00] via-[#ffb347] to-[#ff6a00] rounded-full shadow-[0_0_20px_rgba(255,140,0,0.6)]"></div>
+          {/* SUB-PRODUCT GRID: "The Glass Tray" */}
+          <div className="relative mt-20 ">
+            <div className="flex items-center justify-between mb-10 px-4">
+              <h3 className="text-2xl font-bold text-white tracking-tight">
+                More from this collection
+              </h3>
+              <div className="h-[1px] flex-1 mx-8 bg-white/10"></div>
+              <button className="text-white/50 hover:text-white transition-colors text-sm font-medium uppercase tracking-widest">
+                Browse All →
+              </button>
+            </div>
+
+            {/* Grid container with subtle scrolling behavior on mobile */}
+            <div className="w-max grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 p-4 md:p-8 bg-black/10 rounded-[3rem] border border-white/5 backdrop-blur-sm shadow-inner">
+              {product.slice(1).map((elem, index) => (
+                <div
+                  key={index}
+                  className="transform hover:scale-[1.02] transition-transform duration-300"
+                >
+                  <Product
+                    name={elem.productName}
+                    price={elem.productPrice}
+                    productId={elem._id}
+                    quantity={elem.productQuantity}
+                    src={elem.productImage}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+
+        <section className="mt-[15%] max-w-7xl mx-auto px-6 pb-20">
+          <div className="relative text-center mb-24">
+            <motion.span
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-red-800 font-black tracking-[0.5em] uppercase text-xs block mb-4"
+            >
+              Our Mission
+            </motion.span>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-5xl md:text-7xl font-serif font-bold text-stone-900"
+            >
+              Crafting the Future
+            </motion.h2>
+          </div>
+
+          <div className="space-y-32">
+            <motion.div
+              initial={{ x: -60, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: true }}
+            >
+              <BigBox
+                img={img2}
+                text="Empowering Local Vendors"
+                desc="We showcase creative arts and crafts made by local vendors, ensuring fair value and recognition for their incredible skills."
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ x: 60, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: true }}
+            >
+              <BigBox
+                img={img1}
+                section="right"
+                text="Authentic Accessories"
+                desc="Bringing you genuine, handcrafted items from across Nepal that celebrate our heritage and centuries-old artisanship."
+              />
+            </motion.div>
+          </div>
+        </section>
       </section>
-
-      {/* BigBox Sections */}
-      <section className="bg-gradient-to-r from-[#3b0a0a] via-[#5e1e00] to-[#7a2b0a] pt-24 pb-16 space-y-24 relative overflow-hidden shadow-[0_0_20px_rgba(255,140,0,0.6)]">
-        {/* Decorative gradient overlay for depth */}
-
-        {/* Heading */}
-        <div className="relative text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: -30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="text-5xl md:text-6xl font-extrabold text-transparent bg-gradient-to-r from-[#ffb347] via-[#ff6a00] to-[#ff914d] bg-clip-text drop-shadow-[0_0_25px_rgba(255,160,60,0.4)]"
-          >
-            What We Do
-          </motion.h2>
-
-          <div className="mt-4 mx-auto w-32 h-1 bg-gradient-to-r from-[#ff6a00] via-[#ffb347] to-[#ff6a00] rounded-full shadow-[0_0_20px_rgba(255,180,80,0.6)]"></div>
-        </div>
-
-        {/* Content Boxes */}
-        <motion.div
-          initial={{ x: -50, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1.2 }}
-        >
-          <BigBox
-            img={img2}
-            text="Supports Local Vendors"
-            desc="We showcase creative arts and crafts made by local vendors, ensuring fair value and recognition for their incredible skills."
-          />
-        </motion.div>
-
-        <motion.div
-          className="flex justify-end"
-          initial={{ x: 50, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1.2 }}
-        >
-          <BigBox
-            img={img1}
-            section="right"
-            text="Authentic Nepali Accessories"
-            desc="Bringing you genuine, handcrafted items from across Nepal that celebrate our heritage and artisanship."
-          />
-        </motion.div>
-      </section>
-
-      {/* Footer */}
-      <div
-        id="footer"
-        className="bg-gradient-to-b from-[#1a0000] via-[#260505] to-[#0d0d0d] border-t border-[#ff6a00]/30"
-      >
+      <section>
         <Footer />
-      </div>
+      </section>
     </div>
   );
 };

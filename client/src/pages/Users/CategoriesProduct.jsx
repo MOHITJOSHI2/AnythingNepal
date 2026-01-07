@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Product from "../../components/Sellers/Product";
-import NavBar from "../../components/Sellers/NavBar";
+import Product from "../../components/Users/Product";
+import NavBar from "../../components/Users/NavBar";
 import { useNavigate } from "react-router-dom";
 
-const Categories = () => {
+const CategoriesProduct = () => {
   const [products, setProducts] = useState([]);
-  const id = localStorage.getItem("seller");
+  const id = localStorage.getItem("user");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,25 +56,22 @@ const Categories = () => {
       <NavBar
         Contact={"Contact"}
         Products={"Products"}
-        Shop={"ManageShop"}
-        Signup={id ? "Categories" : "Signup/login"}
-        Name={"Mohit Joshi"}
+        Messages={"Messages"}
+        Signup={"Categories"}
         Id={id}
-        Products1={`/products/${id}`}
-        Signup1={id ? "/categories" : "/signup-login"}
       />
-      <div className="p-4 bg-white">
+      <div className="p-4">
         {products.length === 0 ? (
           <div className="text-center text-gray-600 text-lg">Loading...</div>
         ) : (
           <>
             {/* Art and Artitecture */}
             {artProducts.length > 0 && (
-              <div className="mb-8">
+              <div className="mb-10 ">
                 <h2 className="text-2xl font-bold text-center mb-4">
                   Art and Artitecture
                 </h2>
-                <div className="flex overflow-x-scroll gap-4 pb-2">
+                <div className="flex overflow-x-scroll gap-4 pb-9">
                   {artProducts.map((elem) => (
                     <div className="flex-shrink-0">
                       <Product
@@ -84,6 +81,8 @@ const Categories = () => {
                         name={elem.productName}
                         price={elem.productPrice}
                         quantity={elem.productQuantity}
+                        shop={elem.shop}
+                        id={id}
                       />
                     </div>
                   ))}
@@ -93,9 +92,9 @@ const Categories = () => {
 
             {/* Clothes */}
             {clothesProducts.length > 0 && (
-              <div className="mb-8">
+              <div className="mb-10">
                 <h2 className="text-2xl font-bold text-center mb-4">Clothes</h2>
-                <div className="flex flex-nowrap overflow-x-auto gap-4 pb-2">
+                <div className="flex flex-nowrap overflow-x-auto gap-4 pb-9">
                   {clothesProducts.map((elem) => (
                     <div className="flex-shrink-0">
                       <Product
@@ -105,6 +104,8 @@ const Categories = () => {
                         name={elem.productName}
                         price={elem.productPrice}
                         quantity={elem.productQuantity}
+                        shop={elem.shop}
+                        id={id}
                       />
                     </div>
                   ))}
@@ -114,9 +115,9 @@ const Categories = () => {
 
             {/* Pottery */}
             {potteryProducts.length > 0 && (
-              <div className="mb-8">
+              <div className="mb-10">
                 <h2 className="text-2xl font-bold text-center mb-4">Pottery</h2>
-                <div className="flex overflow-x-auto gap-4 pb-2">
+                <div className="flex overflow-x-auto gap-4 pb-9">
                   {potteryProducts.map((elem) => (
                     <div key={elem._id} className="flex-shrink-0">
                       <Product
@@ -125,6 +126,8 @@ const Categories = () => {
                         name={elem.productName}
                         price={elem.productPrice}
                         quantity={elem.productQuantity}
+                        shop={elem.shop}
+                        id={id}
                       />
                     </div>
                   ))}
@@ -134,11 +137,11 @@ const Categories = () => {
 
             {/* Clothes */}
             {HandiCraft.length > 0 && (
-              <div className="mb-8">
+              <div className="mb-10">
                 <h2 className="text-2xl font-bold text-center mb-4">
                   HandiCraft
                 </h2>
-                <div className="flex flex-nowrap overflow-x-auto gap-4 pb-2">
+                <div className="flex flex-nowrap overflow-x-auto gap-4 pb-9">
                   {HandiCraft.map((elem) => (
                     <div className="flex-shrink-0">
                       <Product
@@ -148,6 +151,8 @@ const Categories = () => {
                         name={elem.productName}
                         price={elem.productPrice}
                         quantity={elem.productQuantity}
+                        shop={elem.shop}
+                        id={id}
                       />
                     </div>
                   ))}
@@ -161,4 +166,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default CategoriesProduct;

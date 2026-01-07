@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import SignupController from "../../controllers/sellers/SignupController";
+import handelErrors from "../../controllers/users/SignupController";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -17,7 +20,41 @@ const LoginForm = () => {
     }));
   };
 
-  const handelSubmition = async () => {};
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate(`/userHomePage/${localStorage.getItem("user")}`);
+    }
+  }, []);
+
+  const handelSubmition = async () => {
+    const response = handelErrors.HandleCorrections2(data);
+    setErrors(response);
+    const req = await fetch(
+      `${import.meta.env.VITE_localhost}/user/userLogin`,
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const res = await req.json();
+    if (req.ok) {
+      console.log(res.message);
+      localStorage.setItem("user", res.encryptedId);
+      localStorage.setItem("name", res.name);
+      navigate(`/userHomePage/${res.encryptedId}`);
+    } else {
+      if (res.emailErr) {
+        setErrors({ email: res.emailErr });
+      }
+      if (res.passwordErr) {
+        setErrors({ password: res.passwordErr });
+      }
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#f7f1e3] to-[#f4ede1] px-4">
@@ -44,7 +81,7 @@ const LoginForm = () => {
             className="w-full px-4 py-2 border border-[#d4a373] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d67d3e] bg-[#fdfaf6] text-[#5a3e2b]"
           />
           <p className="text-sm text-red-500 ml-1" id="p1">
-            {}
+            {errors.email}
           </p>
         </div>
 
@@ -69,7 +106,9 @@ const LoginForm = () => {
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
-            <p className="text-sm text-red-500 ml-1" id="p2"></p>
+            <p className="text-sm text-red-500 ml-1" id="p2">
+              {errors.password}
+            </p>
           </div>
         </div>
 

@@ -17,23 +17,32 @@ import ViewProductPage from "./pages/Seller/ViewProductPage";
 import ShopPage from "./pages/Seller/ShopPage";
 import UpdateProduct from "./pages/Seller/UpdateProduct";
 import Contact from "./pages/Seller/Contact";
+import Cart from "./pages/Users/Cart";
+import UserProfile from "./pages/Users/UserProfile";
+import CategoriesProduct from "./pages/Users/CategoriesProduct";
 
 const MyRoutes = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
+          {/** This is main home Page route */}
           <Route path="/" element={<HomeSignup />} />
+
+          {/** These are login, signup and home routes Page fo user */}
           <Route path="/userHomePage/:id" element={<HomePage />} />
+          <Route path="/pages/users/userLogin" element={<UserLogin />} />
+          <Route path="/pages/users/userSignup" element={<UserSignup />} />
+
+          {/** These are login, signup and home routes Page fo seller */}
           <Route path="/adminHomePage/:id" element={<AdminHomePage />} />
+          <Route path="/pages/sellers/sellerLogin" element={<AdminLogin />} />
+          <Route path="/pages/sellers/sellerSignup" element={<AdminSignup />} />
+          {/** These are other seller routes */}
           <Route
             path="/static_pages/sellerProfile/:id"
             element={<SellerProfile />}
           />
-          <Route path="/pages/users/userLogin" element={<UserLogin />} />
-          <Route path="/pages/sellers/sellerLogin" element={<AdminLogin />} />
-          <Route path="/pages/users/userSignup" element={<UserSignup />} />
-          <Route path="/pages/sellers/sellerSignup" element={<AdminSignup />} />
           <Route path="/shop/:id" element={<ShopPage />} />
           <Route
             path="/pages/sellers/manageProfile/:id"
@@ -46,6 +55,11 @@ const MyRoutes = () => {
           <Route path="/viewProduct/:id" element={<ViewProductPage />} />
           <Route path="/updateProduct/:id" element={<UpdateProduct />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/** User routes */}
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/userProfile" element={<UserProfile />} />
+          <Route path="/productCategories" element={<CategoriesProduct />} />
         </Routes>
       </BrowserRouter>
     </div>

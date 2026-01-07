@@ -3,8 +3,12 @@ import "../../App.css";
 
 const Box = ({ src, name, price }) => {
   return (
-    <div className="box-border w-[42vh] bg-gradient-to-br from-[#f7f1e3] to-[#f4ede1] border border-[#d4a373] rounded-2xl shadow-[0_10px_25px_rgba(90,62,43,0.2)] p-5 mx-5 hover:shadow-[0_15px_35px_rgba(90,62,43,0.3)] hover:scale-[1.02] transition-all duration-300 mb-2">
-      <div className="w-full h-[30vh] flex items-center justify-center bg-gradient-to-b from-transparent via-[#f4ede1] to-[#eaddcf] rounded-xl p-4">
+    <div
+      className="cursor-pointer relative overflow-hidden w-[41vh] bg-white 
+                 border border-gray-300 rounded-2xl shadow-md p-4 mx-4 my-3 
+                 hover:shadow-xl transition-transform duration-300 ease-out"
+    >
+      <div className="w-full h-[30vh] flex items-center justify-center bg-gray-100 border-1 shadow-inner rounded-xl p-4">
         <model-viewer
           src={`/${src}`}
           alt="Nepali traditional model"
@@ -31,13 +35,21 @@ const Box = ({ src, name, price }) => {
       <div className="flex justify-between mt-5 space-x-3">
         <button
           type="button"
-          className="flex-1 text-white bg-gradient-to-r from-[#d67d3e] via-[#b3541e] to-[#8b3e2f] hover:brightness-110 focus:ring-4 focus:outline-none focus:ring-[#d67d3e] font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-300"
+          className=" flex-1 py-2 px-4 rounded-lg text-white text-sm font-medium 
+                     bg-gradient-to-r from-cyan-400 to-blue-500 
+                     shadow-md hover:shadow-lg 
+                     hover:from-cyan-500 hover:to-blue-600 
+                     transition-all duration-300 ease-out active:scale-95"
         >
           Add To Cart
         </button>
         <button
           type="button"
-          className="flex-1 text-white bg-gradient-to-r from-[#b3541e] via-[#8b3e2f] to-[#5a3e2b] hover:brightness-110 focus:ring-4 focus:outline-none focus:ring-[#b3541e] font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-300"
+          className=" flex-1 py-2 px-4 rounded-lg text-white text-sm font-medium 
+          bg-gradient-to-r from-red-400 to-rose-500 
+          shadow-md hover:shadow-lg 
+          hover:from-red-500 hover:to-rose-600 
+          transition-all duration-300 ease-out active:scale-95"
         >
           Buy Now
         </button>

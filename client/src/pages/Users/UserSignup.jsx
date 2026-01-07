@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import HandleCorrections1 from "../../controllers/users/SignupController";
@@ -50,6 +50,12 @@ const UserSignup = () => {
     confirmPassword: "",
   });
 
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate(`/userHomePage/${localStorage.getItem("user")}`);
+    }
+  }, []);
+
   // helper to update state
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,7 +74,7 @@ const UserSignup = () => {
       setStep({ text: "Account Information", value: 1 });
     }
 
-    if (errors == "") {
+    if (Object.keys(response).length === 0) {
       const req = await fetch(
         `${import.meta.env.VITE_localhost}/user/addUser`,
         {
@@ -83,8 +89,16 @@ const UserSignup = () => {
       const res = req.json();
       if (req.ok) {
         console.log(res.message);
+        navigate("/pages/users/userLogin");
       } else {
-        console.log(res.err);
+        if (res.emailErr) {
+          setErrors({ email: res.emailErr });
+          setStep({ value: 2 });
+        }
+        if (res.phoneErr) {
+          setErrors({ phone: res.phoneErr });
+          setStep({ value: 1 });
+        }
       }
     }
   };

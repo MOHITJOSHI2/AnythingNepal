@@ -13,6 +13,12 @@ const ShopPage = () => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
+    if (!id) {
+      navigate(-1);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!shopId) {
       async function checkShop() {
         const req = await fetch(

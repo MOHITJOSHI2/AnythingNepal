@@ -4,5 +4,7 @@ html {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background-color: white;
+  background-color: #ebf4dd;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }

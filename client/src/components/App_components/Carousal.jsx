@@ -49,9 +49,9 @@ const Carousal = ({ product }) => {
                   initial={{ y: 50, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="absolute bottom-[12%] left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#ffb347]/40 to-[#ff6a00]/40 backdrop-blur-lg px-8 py-4 rounded-2xl shadow-[0_0_25px_rgba(255,140,0,0.4)]"
+                  className="absolute bottom-[12%] left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#ffb347]/40 to-[#ff6a00]/40 backdrop-blur-lg px-3 py-2 rounded-2xl shadow-[0_0_25px_rgba(255,140,0,0.4)]"
                 >
-                  <h3 className="text-white font-bold text-2xl md:text-3xl drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+                  <h3 className="text-white font-bold md:text-2xl drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]">
                     {data.productName}
                   </h3>
                 </motion.div>

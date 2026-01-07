@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddProduct = ({ id }) => {
-  const productCategory = ["Clothes", "Art and Architecture", "Pottery"];
+  const productCategory = [
+    "Clothes",
+    "Art and Architecture",
+    "Pottery",
+    "HandiCraft",
+  ];
   const [img, setImg] = useState(null);
   const navigate = useNavigate();
   const [productData, setProductData] = useState({

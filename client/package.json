@@ -16,6 +16,7 @@
     "flowbite": "^3.1.2",
     "flowbite-react": "^0.12.5",
     "fs": "^0.0.1-security",
+    "lucide-react": "^0.562.0",
     "motion": "^12.23.24",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

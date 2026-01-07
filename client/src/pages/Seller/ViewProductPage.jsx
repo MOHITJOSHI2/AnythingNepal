@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, href } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ViewProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [product, setProduct] = useState({
     name: "",
     src: "",
@@ -12,7 +13,12 @@ const ViewProductPage = () => {
     category: "",
     description: "",
   });
+
   const [loading, setLoading] = useState(true);
+
+  // Check user type
+  const isSeller = localStorage.getItem("seller");
+  const isUser = localStorage.getItem("user");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -23,19 +29,18 @@ const ViewProductPage = () => {
         const res = await req.json();
 
         if (req.ok) {
+          const p = res.message[0];
           setProduct({
-            name: res.message[0].productName,
-            src: res.message[0].productImage,
-            price: res.message[0].productPrice,
-            quantity: res.message[0].productQuantity,
-            category: res.message[0].productCategory,
-            description: res.message[0].productDescription,
+            name: p.productName,
+            src: p.productImage,
+            price: p.productPrice,
+            quantity: p.productQuantity,
+            category: p.productCategory,
+            description: p.productDescription,
           });
-        } else {
-          console.error(res.error || "Failed to fetch product");
         }
       } catch (error) {
-        console.error("Error fetching product:", error);
+        console.error("Fetch error:", error);
       } finally {
         setLoading(false);
       }
@@ -52,58 +57,60 @@ const ViewProductPage = () => {
     );
   }
 
-  if (!product) {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen text-center text-gray-700">
-        <p>Product not found.</p>
-        <button
-          onClick={() => navigate(-1)}
-          className="mt-3 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-all"
-        >
-          Go Back
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-60 z-50">
-      <div className="relative bg-white w-[90%] sm:w-[400px] p-6 rounded-2xl shadow-2xl animate-fadeIn">
-        {/* Close button */}
-        <button
-          className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
-          onClick={() => navigate(-1)}
-        >
-          ✖
-        </button>
-
-        <h2 className="text-2xl font-bold text-[#5a3e2b] mb-2 text-center">
-          {product.name}
-        </h2>
-        <p className="text-sm text-[#8b3e2f] mb-1 text-center">
-          {product.category}
-        </p>
-        <p className="text-md font-semibold text-[#8b3e2f] text-center mb-3">
-          Rs. {product.price}
-        </p>
-
-        <div className="flex justify-center mb-4">
+    <div className="w-full min-h-screen bg-white flex flex-col justify-center items-center px-4 py-6">
+      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-10">
+        {/* LEFT: Image */}
+        <div className="flex justify-center items-start">
           <img
             src={`${import.meta.env.VITE_localhost}/assets/${product.src}`}
             alt={product.name}
-            className="w-60 h-40 object-contain rounded-xl shadow-md"
-            onClick={() =>
-              (location.href = `${import.meta.env.VITE_localhost}/assets/${
-                product.src
-              }`)
-            }
+            className="w-full h-auto max-h-[600px] object-cover rounded-xl shadow"
           />
         </div>
 
-        <p className="text-sm text-gray-700 mb-3">{product.description}</p>
-        <p className="text-xs text-gray-500 text-right">
-          Available: {product.quantity}
-        </p>
+        {/* RIGHT: Product Details */}
+        <div className="flex flex-col justify-start">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {product.name}
+          </h1>
+
+          <p className="text-sm text-gray-500 mb-1">{product.category}</p>
+
+          <p className="text-2xl font-semibold text-[#8b3e2f] mb-4">
+            Rs. {product.price}
+          </p>
+
+          <p className="text-sm text-gray-600 mb-6">
+            <span className="font-semibold">Available: </span>
+            {product.quantity}
+          </p>
+
+          <p className="text-gray-700 leading-relaxed text-sm mb-6">
+            {product.description}
+          </p>
+
+          {/* USER BUTTONS */}
+          {isUser && !isSeller && (
+            <div className="flex flex-wrap gap-4 mt-4">
+              <button className="px-6 py-3 bg-[#8b3e2f] text-white rounded-xl shadow-md hover:bg-[#723225] transition-all font-semibold">
+                Add to Cart
+              </button>
+
+              <button className="px-6 py-3 bg-black text-white rounded-xl shadow-md hover:bg-gray-900 transition-all font-semibold">
+                Buy Now
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+      <div>
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-10 w-fit px-6 py-2 bg-gray-300 text-gray-900 rounded-lg hover:bg-gray-400 transition"
+        >
+          Go Back
+        </button>
       </div>
     </div>
   );

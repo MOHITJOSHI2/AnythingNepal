@@ -1,95 +1,139 @@
-import React from "react";
-import "../../App.css";
+import React, { useState } from "react"; // Added useState
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Plus, Minus } from "lucide-react"; // Optional: Using icons for better UI
 
-const Product = ({ productId, src, name, price, quantity }) => {
+const Product = ({ productId, src, name, price, quantity, shop, id }) => {
   const navigate = useNavigate();
 
-  const handleCart = async (id) => {};
-  const handleBuy = async (id) => {};
+  // 1. Local state for the selected quantity
+  const [selectedQty, setSelectedQty] = useState(1);
+
+  // 2. Functions to handle increment/decrement
+  const increment = (e) => {
+    e.stopPropagation();
+    if (selectedQty < quantity) {
+      setSelectedQty((prev) => prev + 1);
+    }
+  };
+
+  const decrement = (e) => {
+    e.stopPropagation();
+    if (selectedQty > 1) {
+      setSelectedQty((prev) => prev - 1);
+    }
+  };
+
+  const handleCart = async (productId, shopId, userId) => {
+    const data = {
+      productId: productId,
+      shopId: shopId,
+      userId: userId,
+      quantity: selectedQty, // 3. Include the selected quantity in the request
+    };
+    try {
+      const req = await fetch(
+        `${import.meta.env.VITE_localhost}/user/addToCart`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const res = await req.json();
+      if (req.ok) {
+        console.log(`Added ${selectedQty} items to cart`);
+      } else {
+        console.log(res.err);
+      }
+    } catch (error) {
+      console.log("Error at addToCartFront: ", error);
+    }
+  };
 
   return (
     <motion.div
-      whileHover={{ scale: 1.04, y: -4 }}
-      transition={{ type: "spring", stiffness: 180, damping: 16 }}
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       onClick={() => navigate(`/viewProduct/${productId}`)}
-      className="cursor-pointer relative overflow-hidden w-[36vh] bg-white 
-                 border border-gray-300 rounded-2xl shadow-md 
-                 p-5 mx-5 my-3 
-                 hover:shadow-xl 
-                 transition-transform duration-300 ease-out"
+      className="group cursor-pointer w-full max-w-[370px] h-[520px] 
+             bg-white/60 backdrop-blur-md rounded-[2rem] shadow-sm 
+             hover:shadow-2xl hover:bg-white transition-all duration-500
+             flex flex-col border border-stone-200/50 relative overflow-hidden mx-auto"
     >
-      {/* Decorative subtle texture */}
-      <div className="absolute inset-0 opacity-[0.07] bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none" />
-
-      {/* Image section */}
-      <div
-        className="w-full h-[22vh] flex items-center justify-center bg-gradient-to-b 
-                      from-[#f5e6ca] via-[#f8f1e4] to-[#eaddcf] 
-                      rounded-xl overflow-hidden shadow-inner"
-      >
+      {/* IMAGE SECTION */}
+      <div className="relative flex-[1.8] overflow-hidden m-3 rounded-[1.5rem] bg-stone-100">
         <img
           src={`${import.meta.env.VITE_localhost}/assets/${src}`}
           alt={name}
-          className="w-full h-full object-cover rounded-lg 
-                     transform transition-transform duration-500 ease-out 
-                     hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-      </div>
-
-      {/* Text */}
-      <div className="text-left mt-4">
-        <p className="text-lg font-semibold text-[#3e2b1a] tracking-wide line-clamp-1">
-          {name}
-        </p>
-        <div className="flex flex-row justify-between">
-          <p className="text-sm text-[#8b3e2f] font-medium mt-2 bg-[#fff6ee] w-fit px-3 py-1 rounded-lg">
-            Rs. {price}
-          </p>
-          <p className="text-sm text-[#8b3e2f] font-medium mt-2 bg-[#fff6ee] w-fit px-3 py-1 rounded-lg">
-            Qty: {quantity}
-          </p>
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          <span className="bg-white/90 backdrop-blur-sm text-[10px] font-bold uppercase tracking-widest text-stone-800 px-3 py-1.5 rounded-full shadow-sm">
+            Stock: {quantity}
+          </span>
         </div>
       </div>
 
-      {/* Subtle overlay glow */}
-      <div
-        className="absolute inset-0 rounded-2xl bg-gradient-to-br 
-                      from-[#fff3e0]/20 to-transparent opacity-0 
-                      hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-      />
+      {/* DETAILS SECTION */}
+      <div className="flex-[1.5] p-5 pt-2 flex flex-col justify-between">
+        <div>
+          <h3 className="text-lg font-bold text-stone-900 leading-tight line-clamp-2 font-serif">
+            {name}
+          </h3>
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-2">
+              <p className="text-xl font-black text-red-800">
+                Rs. {price.toLocaleString()}
+              </p>
+            </div>
 
-      {/* Action Buttons */}
-      <div className="flex justify-between items-center mt-5 px-1">
-        <button
-          type="button"
-          className="py-1.5 px-4 rounded-lg text-white text-sm font-medium 
-                     bg-gradient-to-r from-cyan-400 to-blue-500 
-                     shadow-md hover:shadow-lg 
-                     hover:from-cyan-500 hover:to-blue-600 
-                     transition-all duration-300 ease-out active:scale-95"
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate(`/updateProduct/${productId}`);
-          }}
-        >
-          Add To Cart
-        </button>
-        <button
-          type="button"
-          className="py-1.5 px-4 rounded-lg text-white text-sm font-medium 
-                     bg-gradient-to-r from-red-400 to-rose-500 
-                     shadow-md hover:shadow-lg 
-                     hover:from-red-500 hover:to-rose-600 
-                     transition-all duration-300 ease-out active:scale-95"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleCart(productId);
-          }}
-        >
-          Buy Now
-        </button>
+            {/* QUANTITY SELECTOR UI */}
+            <div className="flex items-center bg-stone-100 rounded-lg p-1 border border-stone-200">
+              <button
+                onClick={decrement}
+                className="p-1 hover:bg-white rounded-md transition-colors disabled:opacity-30"
+                disabled={selectedQty <= 1}
+              >
+                <Minus size={14} />
+              </button>
+              <span className="px-3 text-sm font-bold text-stone-800 min-w-[30px] text-center">
+                {selectedQty}
+              </span>
+              <button
+                onClick={increment}
+                className="p-1 hover:bg-white rounded-md transition-colors disabled:opacity-30"
+                disabled={selectedQty >= quantity}
+              >
+                <Plus size={14} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ACTION BUTTONS */}
+        <div className="flex gap-3 mt-4">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCart(productId, shop, id);
+            }}
+            className="flex-1 text-[11px] font-bold uppercase tracking-wider rounded-xl border border-stone-300 py-4 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-all duration-300 active:scale-95"
+          >
+            Add {selectedQty > 1 ? `(${selectedQty})` : ""} to Cart
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              // handleBuy(productId, selectedQty);
+            }}
+            className="flex-1 text-[11px] font-bold uppercase tracking-wider rounded-xl bg-stone-900 text-white py-4 hover:bg-red-800 transition-all duration-300 active:scale-95 shadow-lg shadow-stone-200"
+          >
+            Buy Now
+          </button>
+        </div>
       </div>
     </motion.div>
   );

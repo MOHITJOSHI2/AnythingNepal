@@ -25,7 +25,7 @@ const NavBar = ({
   const homeNav =
     "sticky top-0 z-50 bg-gradient-to-b from-[#0d0d0d]/70 via-[#1a0e0e]/60 to-[#260505]/70 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.4)] border-b border-[#ffb347]/0";
   const otherNav =
-    "sticky top-0 z-50 bg-gray-900 backdrop-blur-lg shadow-[0_4px_25px_rgba(0,0,0,0.35)] border-b border-[#333]/40";
+    "sticky top-0 z-50 bg-[#1F1F1F] backdrop-blur-lg border-b border-[#333]/40";
 
   const location = window.location.href;
   const navCss =

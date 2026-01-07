@@ -16,7 +16,7 @@ const AdminHomePage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
-  let shopId = localStorage.getItem("shopId");
+  let shopId = localStorage.getItem("shop");
 
   useEffect(() => {
     if (!shopId) {
@@ -25,6 +25,9 @@ const AdminHomePage = () => {
           `${import.meta.env.VITE_localhost}/seller/getShopBySellerId/${id}`,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
         );
         const res = await req.json();
@@ -45,12 +48,19 @@ const AdminHomePage = () => {
       const fetchProduct = async () => {
         try {
           const req = await fetch(
-            `${import.meta.env.VITE_localhost}/seller/getProduct/${shopId}`
+            `${import.meta.env.VITE_localhost}/seller/getProduct/${shopId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
           );
           const res = await req.json();
 
           if (req.ok) {
             setProduct(res.message);
+            console.log(res.message);
             setLoading(false);
           } else {
             setLoading(false);
