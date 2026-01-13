@@ -47,7 +47,7 @@ exports.updateSeller = async (req, res) => {
     const { fullName, phone, district, city, address, email, password } = req.body;
     try {
         if (!req.params.id) {
-            res.status(400).json({ err: "Id not found" })
+            return res.status(400).json({ err: "Id not found" })
         }
         const userId = decryptId(req.params.id)
         const sellerData = await Seller.findById(userId)
@@ -72,7 +72,7 @@ exports.updateSeller = async (req, res) => {
                 email: email,
                 password: password,
             })
-            res.status(200).json({ message: "successfully updated user data" })
+            res.status(201).json({ message: "successfully updated user data" })
         }
 
     } catch (error) {

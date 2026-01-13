@@ -60,7 +60,22 @@ exports.viewCart = async (req, res) => {
 }
 
 exports.deleteCart = async (req, res) => {
+    if (!req.query.s) {
+        return res.status(404).json({ err: "No id" })
+    }
+    const string = req.query.s
+    try {
+        const cartData = await Cart.find({ _id: string })
+        if (cartData) {
+            await Cart.findByIdAndDelete(string)
+            res.status(200).json({ message: "Deleted successfully" })
+        } else {
+            res.status(400).json({ err: "Data missing" })
+        }
 
+    } catch (error) {
+        console.log("Error at deleteCart: ", error)
+    }
 }
 
 exports.updateCart = async (req, res) => {
