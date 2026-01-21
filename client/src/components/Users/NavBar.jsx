@@ -8,11 +8,11 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [productsName, setProductsName] = useState([]);
+  const [cart, setCart] = useState(1);
   const navigate = useNavigate();
   const Id = localStorage.getItem("user");
   const name = localStorage.getItem("name");
 
-  // FIX 1: Prevent body from scrolling when mobile menu is open
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
@@ -51,6 +51,33 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
     getSearchData();
   }, [search]);
 
+  useEffect(() => {
+    if (!Id) {
+      navigate("/");
+    } else {
+      async function getCart() {
+        try {
+          const req = await fetch(
+            `${import.meta.env.VITE_localhost}/user/viewCart?userId=${Id}`,
+            {
+              method: "GET",
+            }
+          );
+
+          const res = await req.json();
+          if (req.ok) {
+            setCart(res.items.length);
+          } else {
+            console.log("error");
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      getCart();
+    }
+  }, []);
+
   return (
     <nav className={Nav}>
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between ">
@@ -64,7 +91,7 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
 
         {/* DESKTOP MENU */}
         <ul className="hidden min-[1485px]:flex items-center space-x-10 font-medium">
-          <li className={linkStyle} onClick={() => navigate("")}>
+          <li className={linkStyle} onClick={() => navigate("/messages")}>
             {Messages}
           </li>
           <li className={linkStyle} onClick={() => navigate("/showProducts")}>
@@ -128,14 +155,18 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
             title="Cart"
           >
             <BsBasket size={22} />
-            <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-              1
-            </span>
+            {cart ? (
+              <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {cart}
+              </span>
+            ) : (
+              ""
+            )}
           </div>
           <div
             title="Profile"
             className="font-semibold min-w-[50px] text-center p-1 border border-[#EBF4DD] rounded-full cursor-pointer hover:bg-[#EBF4DD] text-gray-800/80 transition whitespace-nowrap"
-            onClick={() => navigate("/userProfile")}
+            onClick={() => navigate(`/userProfile/${Id}`)}
           >
             {name
               ?.split(" ")
@@ -164,7 +195,7 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
           >
             <ul className="flex flex-col items-center space-y-6 py-8 max-h-[80vh] overflow-y-auto">
               {[
-                { text: Messages, to: "" },
+                { text: Messages, to: "/messages" },
                 { text: Products, to: "/showProducts" },
                 { text: Signup, to: "/productCategories" },
                 { text: Contact, to: "/contact" },
@@ -189,9 +220,13 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
                 }}
               >
                 <BsBasket size={30} className="text-white" />
-                <span className="absolute top-2 -right-3 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  1
-                </span>
+                {cart ? (
+                  <span className="absolute top-2 -right-3 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {cart}
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
 
               <div

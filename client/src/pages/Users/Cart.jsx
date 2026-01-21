@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../../components/Users/NavBar";
 import CartProduct from "../../components/Users/CartProduct";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const id = localStorage.getItem("user");
   const [data, setData] = useState([]);
   const [qty, setQty] = useState(1);
   const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) {
       console.log("No id");
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     async function viewCart() {
@@ -45,7 +47,7 @@ const Cart = () => {
     }
 
     viewCart();
-  }, []);
+  }, [data]);
 
   return (
     <div className="min-h-screen bg-stone-50 pb-32">
@@ -55,7 +57,6 @@ const Cart = () => {
         Messages={"Messages"}
         Signup={"Categories"}
         Id={id}
-        Shop1={"/shop"}
       />
 
       <div className="max-w-4xl mx-auto px-4 mt-10">
@@ -70,9 +71,12 @@ const Cart = () => {
               price={elem.productPrice}
               productId={elem._id}
               quantity={elem.productQuantity}
+              shopId={elem.shop}
+              userId={id}
               key={elem._id}
               src={elem.productImage}
               qty={qty[index]?.quantity || 0}
+              cartId={qty[index]?._id || ""}
             />
           ))
         ) : (
@@ -93,7 +97,18 @@ const Cart = () => {
             </p>
             <p className="text-2xl font-black">Rs. {total.toLocaleString()}</p>
           </div>
-          <button className="bg-red-800 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all">
+          <button
+            className="bg-red-800 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all"
+            onClick={() =>
+              navigate("/payment", {
+                state: {
+                  userId: id,
+                  productData: data,
+                  amount: total,
+                },
+              })
+            }
+          >
             Proceed to Payment
           </button>
         </div>

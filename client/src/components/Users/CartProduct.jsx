@@ -2,9 +2,35 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Trash2, CreditCard } from "lucide-react"; // Optional icons
+import Payment from "../../pages/Users/Payment";
 
-const CartProduct = ({ productId, src, name, price, quantity, qty }) => {
+const CartProduct = ({
+  productId,
+  src,
+  name,
+  price,
+  quantity,
+  qty,
+  shopId,
+  userId,
+  cartId,
+}) => {
   const navigate = useNavigate();
+  const handleRemove = async () => {
+    try {
+      const req = await fetch(
+        `${import.meta.env.VITE_localhost}/user/deleteCart?s=${cartId}`
+      );
+      const res = await req.json();
+      if (req.ok) {
+        console.log(res.message);
+      } else {
+        console.log(res.err);
+      }
+    } catch (error) {
+      console.log("error at handleRemove: ", error);
+    }
+  };
 
   return (
     <motion.div
@@ -59,20 +85,12 @@ const CartProduct = ({ productId, src, name, price, quantity, qty }) => {
         <div className="flex gap-3 mt-6">
           <button
             onClick={(e) => {
-              e.stopPropagation(); /* remove logic */
+              e.stopPropagation();
+              handleRemove();
             }}
             className="flex-1 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-wider rounded-xl border border-stone-200 py-3 hover:bg-red-50 hover:text-red-700 hover:border-red-200 transition-all duration-300"
           >
             <Trash2 size={14} /> Remove
-          </button>
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation(); /* buy logic */
-            }}
-            className="flex-1 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-wider rounded-xl bg-stone-900 text-white py-3 hover:bg-stone-800 transition-all duration-300 shadow-md active:scale-95"
-          >
-            <CreditCard size={14} /> Checkout
           </button>
         </div>
       </div>

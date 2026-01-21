@@ -29,7 +29,7 @@ const Product = ({ productId, src, name, price, quantity, shop, id }) => {
       productId: productId,
       shopId: shopId,
       userId: userId,
-      quantity: selectedQty, // 3. Include the selected quantity in the request
+      quantity: selectedQty,
     };
     try {
       const req = await fetch(
@@ -127,7 +127,6 @@ const Product = ({ productId, src, name, price, quantity, shop, id }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              // handleBuy(productId, selectedQty);
             }}
             className="flex-1 text-[11px] font-bold uppercase tracking-wider rounded-xl bg-stone-900 text-white py-4 hover:bg-red-800 transition-all duration-300 active:scale-95 shadow-lg shadow-stone-200"
           >

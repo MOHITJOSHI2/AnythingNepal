@@ -7,7 +7,6 @@ import AdminLogin from "./pages/Seller/AdminLogin";
 import AdminSignup from "./pages/Seller/AdminSignup";
 import HomeSignup from "./pages/mainFiles/HomeSignup";
 import Product from "./pages/Users/Product";
-import EsewaPayment from "./components/Users/EsewaPayment";
 import AdminHomePage from "./pages/Seller/AdminHomePage";
 import AVProduct from "./pages/Seller/AVProduct";
 import ManageProfile from "./pages/Seller/ManageProfile";
@@ -20,6 +19,9 @@ import Contact from "./pages/Seller/Contact";
 import Cart from "./pages/Users/Cart";
 import UserProfile from "./pages/Users/UserProfile";
 import CategoriesProduct from "./pages/Users/CategoriesProduct";
+import Payment from "./pages/Users/Payment";
+import Messages from "./pages/Users/Messages";
+import PaymentInfo from "./pages/Users/PaymentInfo";
 
 const MyRoutes = () => {
   return (
@@ -50,7 +52,6 @@ const MyRoutes = () => {
           />
           <Route path="/showProducts" element={<Product />} />
           <Route path="/products/:id" element={<AVProduct />} />
-          <Route path="/payment" element={<EsewaPayment />} />
           <Route path="/categories" element={<Catregories />} />
           <Route path="/viewProduct/:id" element={<ViewProductPage />} />
           <Route path="/updateProduct/:id" element={<UpdateProduct />} />
@@ -58,8 +59,11 @@ const MyRoutes = () => {
 
           {/** User routes */}
           <Route path="/cart" element={<Cart />} />
-          <Route path="/userProfile" element={<UserProfile />} />
+          <Route path="/userProfile/:id" element={<UserProfile />} />
           <Route path="/productCategories" element={<CategoriesProduct />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/paymentInfo" element={<PaymentInfo />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  FaArrowLeft,
+  FaShoppingCart,
+  FaBolt,
+  FaBoxOpen,
+  FaTag,
+} from "react-icons/fa";
 
 const ViewProductPage = () => {
   const { id } = useParams();
@@ -13,10 +20,8 @@ const ViewProductPage = () => {
     category: "",
     description: "",
   });
-
   const [loading, setLoading] = useState(true);
 
-  // Check user type
   const isSeller = localStorage.getItem("seller");
   const isUser = localStorage.getItem("user");
 
@@ -27,7 +32,6 @@ const ViewProductPage = () => {
           `${import.meta.env.VITE_localhost}/seller/getSingleProduct/${id}`
         );
         const res = await req.json();
-
         if (req.ok) {
           const p = res.message[0];
           setProduct({
@@ -45,73 +49,124 @@ const ViewProductPage = () => {
         setLoading(false);
       }
     };
-
     fetchProduct();
   }, [id]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen text-lg font-semibold text-gray-600">
-        Loading product details...
+      <div className="flex flex-col justify-center items-center h-screen space-y-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <p className="text-slate-500 font-medium animate-pulse">
+          Refining product details...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="w-full min-h-screen bg-white flex flex-col justify-center items-center px-4 py-6">
-      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* LEFT: Image */}
-        <div className="flex justify-center items-start">
-          <img
-            src={`${import.meta.env.VITE_localhost}/assets/${product.src}`}
-            alt={product.name}
-            className="w-full h-auto max-h-[600px] object-cover rounded-xl shadow"
-          />
-        </div>
-
-        {/* RIGHT: Product Details */}
-        <div className="flex flex-col justify-start">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {product.name}
-          </h1>
-
-          <p className="text-sm text-gray-500 mb-1">{product.category}</p>
-
-          <p className="text-2xl font-semibold text-[#8b3e2f] mb-4">
-            Rs. {product.price}
-          </p>
-
-          <p className="text-sm text-gray-600 mb-6">
-            <span className="font-semibold">Available: </span>
-            {product.quantity}
-          </p>
-
-          <p className="text-gray-700 leading-relaxed text-sm mb-6">
-            {product.description}
-          </p>
-
-          {/* USER BUTTONS */}
-          {isUser && !isSeller && (
-            <div className="flex flex-wrap gap-4 mt-4">
-              <button className="px-6 py-3 bg-[#8b3e2f] text-white rounded-xl shadow-md hover:bg-[#723225] transition-all font-semibold">
-                Add to Cart
-              </button>
-
-              <button className="px-6 py-3 bg-black text-white rounded-xl shadow-md hover:bg-gray-900 transition-all font-semibold">
-                Buy Now
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-      <div>
+    <div className="min-h-screen bg-[#FDFDFD] pb-12">
+      {/* Top Navigation Bar */}
+      <nav className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
         <button
           onClick={() => navigate(-1)}
-          className="mt-10 w-fit px-6 py-2 bg-gray-300 text-gray-900 rounded-lg hover:bg-gray-400 transition"
+          className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors font-medium group"
         >
-          Go Back
+          <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
+          Back to Store
         </button>
-      </div>
+      </nav>
+
+      <main className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* LEFT: Image Gallery Style */}
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-100 to-slate-100 rounded-3xl blur opacity-25"></div>
+            <div className="relative overflow-hidden rounded-3xl bg-white shadow-2xl shadow-slate-200">
+              <img
+                src={`${import.meta.env.VITE_localhost}/assets/${product.src}`}
+                alt={product.name}
+                className="w-full h-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+          </div>
+
+          {/* RIGHT: Product Information */}
+          <div className="flex flex-col pt-4">
+            {/* Category Badge */}
+            <div className="flex items-center gap-2 mb-4">
+              <span className="px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-widest rounded-full flex items-center gap-1">
+                <FaTag className="text-[10px]" /> {product.category}
+              </span>
+              <span
+                className={`px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full flex items-center gap-1 ${
+                  product.quantity > 0
+                    ? "bg-emerald-50 text-emerald-600"
+                    : "bg-rose-50 text-rose-600"
+                }`}
+              >
+                <FaBoxOpen className="text-[10px]" />{" "}
+                {product.quantity > 0 ? "In Stock" : "Out of Stock"}
+              </span>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
+              {product.name}
+            </h1>
+
+            <div className="flex items-baseline gap-2 mb-8">
+              <span className="text-3xl font-bold text-slate-900">
+                Rs. {Number(product.price).toLocaleString()}
+              </span>
+              <span className="text-slate-400 text-sm font-medium line-through">
+                Rs. {(Number(product.price) * 1.2).toFixed(0)}
+              </span>
+            </div>
+
+            <div className="space-y-6 mb-10">
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+                Description
+              </h3>
+              <p className="text-slate-600 leading-relaxed text-lg italic">
+                "{product.description}"
+              </p>
+            </div>
+
+            {/* Inventory Detail */}
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 mb-10">
+              <p className="text-slate-500 text-sm">
+                Only{" "}
+                <span className="text-indigo-600 font-bold">
+                  {product.quantity} units
+                </span>{" "}
+                left in the inventory.
+              </p>
+            </div>
+
+            {/* USER ACTIONS */}
+            {isUser && !isSeller && (
+              <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+                <button className="flex-1 px-8 py-4 bg-white border-2 border-slate-900 text-slate-900 rounded-2xl shadow-sm hover:bg-slate-900 hover:text-white transition-all duration-300 font-bold flex items-center justify-center gap-2 group">
+                  <FaShoppingCart className="group-hover:rotate-12 transition-transform" />
+                  Add to Cart
+                </button>
+
+                <button className="flex-1 px-8 py-4 bg-indigo-600 text-white rounded-2xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:shadow-indigo-300 transition-all duration-300 font-bold flex items-center justify-center gap-2">
+                  <FaBolt />
+                  Buy It Now
+                </button>
+              </div>
+            )}
+
+            {/* Seller Warning/Info */}
+            {isSeller && (
+              <div className="mt-8 p-4 border border-amber-100 bg-amber-50/50 rounded-xl text-amber-700 text-sm">
+                Viewing as seller. To purchase this item, please log in with a
+                customer account.
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

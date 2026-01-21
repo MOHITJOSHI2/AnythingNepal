@@ -368,7 +368,10 @@ const HomePage = () => {
                     price={elem.productPrice}
                     productId={elem._id}
                     quantity={elem.productQuantity}
+                    key={elem._id}
                     src={elem.productImage}
+                    shop={elem.shop}
+                    id={id}
                   />
                 </div>
               ))}

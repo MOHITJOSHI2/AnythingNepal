@@ -1,6 +1,6 @@
 const { addToCart, viewCart, deleteCart, updateCart } = require('../../Controller/user/cart')
 const { savePayment, getPayments } = require('../../Controller/user/payment')
-const { getFilteredProduct, getProductSearch } = require('../../Controller/user/product')
+const { getFilteredProduct, getProductSearch, payedProducts } = require('../../Controller/user/product')
 const { addUser, userLogin, checkUser, updateUser, getUserData } = require('../../Controller/user/user')
 
 const express = require("express")
@@ -16,6 +16,7 @@ router.get('/getUserData/:id', getUserData)
 //Product Routes
 router.get('/getFilteredProducts', getFilteredProduct)
 router.get('/getProductSearch', getProductSearch)
+router.post('/payedProducts', payedProducts)
 
 //Cart routes
 router.post('/addToCart', addToCart)

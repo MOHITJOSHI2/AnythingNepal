@@ -67,7 +67,7 @@ const CategoriesProduct = () => {
           <>
             {/* Art and Artitecture */}
             {artProducts.length > 0 && (
-              <div className="mb-10 ">
+              <div className="mb-10 px-10">
                 <h2 className="text-2xl font-bold text-center mb-4">
                   Art and Artitecture
                 </h2>
@@ -92,7 +92,7 @@ const CategoriesProduct = () => {
 
             {/* Clothes */}
             {clothesProducts.length > 0 && (
-              <div className="mb-10">
+              <div className="mb-10 px-10">
                 <h2 className="text-2xl font-bold text-center mb-4">Clothes</h2>
                 <div className="flex flex-nowrap overflow-x-auto gap-4 pb-9">
                   {clothesProducts.map((elem) => (
@@ -115,7 +115,7 @@ const CategoriesProduct = () => {
 
             {/* Pottery */}
             {potteryProducts.length > 0 && (
-              <div className="mb-10">
+              <div className="mb-10 px-10">
                 <h2 className="text-2xl font-bold text-center mb-4">Pottery</h2>
                 <div className="flex overflow-x-auto gap-4 pb-9">
                   {potteryProducts.map((elem) => (
@@ -137,7 +137,7 @@ const CategoriesProduct = () => {
 
             {/* Clothes */}
             {HandiCraft.length > 0 && (
-              <div className="mb-10">
+              <div className="mb-10 px-10">
                 <h2 className="text-2xl font-bold text-center mb-4">
                   HandiCraft
                 </h2>

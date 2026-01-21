@@ -42,5 +42,26 @@ exports.getProductSearch = async (req, res) => {
     }
 };
 
+exports.payedProducts = async (req, res) => {
+    try {
+        const { data } = req.body;
+        if (!data) {
+            return res.status(400).json({ err: "Data None" })
+        }
+        const productsId = data.map((elem) => elem.products)
+        let productIds = productsId[0]
+
+        const fetchProductsData = await Products.find({ _id: { $in: productIds } })
+        if (fetchProductsData.length > 0) {
+            res.status(200).json({ message: fetchProductsData })
+        } else {
+            res.status(404).json({ err: "data not found" })
+
+        }
+    } catch (error) {
+        console.log("Error at payedProduct: ", error)
+    }
+}
+
 
 
