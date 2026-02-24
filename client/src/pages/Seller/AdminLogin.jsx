@@ -120,7 +120,7 @@ const AdminLogin = () => {
           <a href="/forgot-password" className="text-[#8b3e2f] hover:underline">
             Forgot Password?
           </a>
-          <a href="/signup" className="text-[#8b3e2f] hover:underline">
+          <a href="/" className="text-[#8b3e2f] hover:underline">
             Sign Up
           </a>
         </div>

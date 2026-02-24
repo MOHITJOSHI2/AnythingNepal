@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SignupController from "../../controllers/sellers/SignupController";
+import SignupController from "../../controllers/users/SignupController";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -36,11 +36,12 @@ const UpdatePersonalInfo = ({ id, onUpdate, onCancel }) => {
     fullName: "",
     phone: "",
     district: "",
+    gender: "",
+    age: 0,
     city: "",
     address: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [majorErr, setMajorErr] = useState({
@@ -55,20 +56,22 @@ const UpdatePersonalInfo = ({ id, onUpdate, onCancel }) => {
   useEffect(() => {
     async function getData() {
       const req = await fetch(
-        `${import.meta.env.VITE_localhost}/seller/sellerData/${id}`
+        `${import.meta.env.VITE_localhost}/user/getUserData/${id}`
       );
 
       const res = await req.json();
       if (req.ok) {
-        setDistrict(res.getData.district);
+        console.log(res.message);
+        setDistrict(res.message.district);
         setData({
-          fullName: res.getData.fullName,
-          phone: res.getData.phone,
-          district: res.getData.district,
-          city: res.getData.city,
-          address: res.getData.address,
-          email: res.getData.email,
-          password: res.getData.password,
+          fullName: res.message.fullName,
+          phone: res.message.phone,
+          district: res.message.district,
+          city: res.message.city,
+          address: res.message.address,
+          email: res.message.email,
+          gender: res.message.gender,
+          age: res.message.age,
         });
       }
     }
@@ -89,7 +92,7 @@ const UpdatePersonalInfo = ({ id, onUpdate, onCancel }) => {
 
     if (Object.keys(response).length === 0) {
       const req = await fetch(
-        `${import.meta.env.VITE_localhost}/seller/updateSeller/${id}`,
+        `${import.meta.env.VITE_localhost}/user/updateUser/${id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -108,6 +111,8 @@ const UpdatePersonalInfo = ({ id, onUpdate, onCancel }) => {
           setMajorErr({ phoneErr: res.phoneErr });
         }
       }
+    } else {
+      console.log("Erroe");
     }
   };
 
@@ -153,6 +158,40 @@ const UpdatePersonalInfo = ({ id, onUpdate, onCancel }) => {
             <p className="text-sm text-red-500 mt-1">
               {errors.phoneErr ? errors.phoneErr : majorErr.phoneErr}
             </p>
+          </div>
+
+          {/* Gender */}
+          <div>
+            <label className="block text-[#5a3e2b] text-sm font-medium mb-1">
+              Gender
+            </label>
+            <input
+              type="text"
+              name="gender"
+              value={data.gender}
+              onChange={handleChange}
+              placeholder="male/female"
+              className="w-full px-4 py-2 border border-[#d7b892] rounded-lg bg-[#fdfaf6]
+                         focus:outline-none focus:ring-2 focus:ring-amber-300 transition"
+            />
+            <p className="text-sm text-red-500 mt-1">{errors.gender}</p>
+          </div>
+
+          {/* Age */}
+          <div>
+            <label className="block text-[#5a3e2b] text-sm font-medium mb-1">
+              Age
+            </label>
+            <input
+              type="number"
+              name="age"
+              value={data.age}
+              onChange={handleChange}
+              placeholder="18"
+              className="w-full px-4 py-2 border border-[#d7b892] rounded-lg bg-[#fdfaf6]
+                         focus:outline-none focus:ring-2 focus:ring-amber-300 transition"
+            />
+            <p className="text-sm text-red-500 mt-1">{errors.age}</p>
           </div>
 
           {/* District */}
@@ -260,6 +299,7 @@ const UpdatePersonalInfo = ({ id, onUpdate, onCancel }) => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
+            <p className="text-sm text-red-500 mt-1">{errors.password}</p>
           </div>
         </div>
 
@@ -277,6 +317,7 @@ const UpdatePersonalInfo = ({ id, onUpdate, onCancel }) => {
             onClick={handelUpdate}
             className="px-8 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white
                        font-semibold shadow-sm hover:shadow-md transition"
+            type="button"
           >
             Update Data
           </button>

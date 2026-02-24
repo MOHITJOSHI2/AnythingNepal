@@ -63,5 +63,21 @@ exports.payedProducts = async (req, res) => {
     }
 }
 
+exports.getSingleCategory = async (req, res) => {
+    try {
+        if (req.query) {
+            const category = req.query.category;
+            const getData = await Products.find({ productCategory: category })
+            if (getData.length > 0) {
+                res.status(200).json({ message: getData })
+            } else {
+                res.status(400).json({ err: "no data found" })
+            }
+        }
+    } catch (error) {
+        console.log("Error at get single category: ", error)
+    }
+}
+
 
 

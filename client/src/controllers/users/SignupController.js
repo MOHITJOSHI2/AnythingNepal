@@ -64,4 +64,38 @@ const HandleCorrections2 = (data) => {
     return errors
 }
 
-export default { HandleCorrections1, HandleCorrections2 };
+const HandleCorrections3 = (data) => {
+    const { fullName, phone, gender, age, district, city, address, email, password } = data
+    const errors = {}
+    if (fullName.length < 5) {
+        errors.fullName = "full name cannot be less than 5 letters"
+    }
+    if (phone.length != 10) {
+        errors.phone = "Phone number must be of 10 numbers"
+    }
+    if (!district) {
+        errors.district = "District cannot be null"
+    }
+    if (age < 10) {
+        errors.age = "age cannot be null or less than 10"
+    }
+    if (!gender) {
+        errors.gender = "gender cannot be null"
+    }
+    if (!city) {
+        errors.city = "City cannot be null"
+    }
+    if (!address) {
+        errors.address = "Address cannot be null"
+    }
+    if (!email) {
+        errors.email = "Email cannot be null"
+    }
+    if (!password) {
+        errors.password = "Password cannot be null"
+    }
+
+    return errors
+}
+
+export default { HandleCorrections1, HandleCorrections2, HandleCorrections3 };

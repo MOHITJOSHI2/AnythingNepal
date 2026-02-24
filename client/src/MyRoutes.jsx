@@ -22,6 +22,7 @@ import CategoriesProduct from "./pages/Users/CategoriesProduct";
 import Payment from "./pages/Users/Payment";
 import Messages from "./pages/Users/Messages";
 import PaymentInfo from "./pages/Users/PaymentInfo";
+import IndividualCategory from "./pages/Users/IndividualCategory";
 
 const MyRoutes = () => {
   return (
@@ -64,6 +65,7 @@ const MyRoutes = () => {
           <Route path="/payment" element={<Payment />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/paymentInfo" element={<PaymentInfo />} />
+          <Route path="/getSingleCategory" element={<IndividualCategory />} />
         </Routes>
       </BrowserRouter>
     </div>

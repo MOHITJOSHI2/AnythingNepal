@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../../components/Users/NavBar";
-import UpdatePersonalInfo from "../../components/Sellers/UpdatePersonalInfo";
+import UpdatePersonalInfo from "../../components/Users/UpdatePersonalInfo";
 
 const UserProfile = () => {
   const { id } = useParams();

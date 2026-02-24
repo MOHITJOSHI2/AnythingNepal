@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../../components/Users/NavBar";
+import { useNavigate } from "react-router-dom";
 
 const Messages = () => {
   const id = localStorage.getItem("user");
   const [orderDetails, setOrderDetails] = useState([]);
   const [productData, setProductData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getMessages() {
@@ -134,8 +136,17 @@ const Messages = () => {
                   <span
                     key={index}
                     className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg font-medium text-xs md:text-sm"
+                    onClick={() => navigate(`/viewProduct/${order._id}`)}
                   >
                     Order {index + 1} #{order.productName}
+                    <div className="w-[40%]">
+                      <img
+                        src={`${import.meta.env.VITE_localhost}/assets/${
+                          order.productImage
+                        }`}
+                        alt=""
+                      />
+                    </div>
                   </span>
                 ))}
               </div>

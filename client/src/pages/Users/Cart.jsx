@@ -97,20 +97,24 @@ const Cart = () => {
             </p>
             <p className="text-2xl font-black">Rs. {total.toLocaleString()}</p>
           </div>
-          <button
-            className="bg-red-800 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all"
-            onClick={() =>
-              navigate("/payment", {
-                state: {
-                  userId: id,
-                  productData: data,
-                  amount: total,
-                },
-              })
-            }
-          >
-            Proceed to Payment
-          </button>
+          {total > 0 ? (
+            <button
+              className="bg-red-800 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all"
+              onClick={() =>
+                navigate("/payment", {
+                  state: {
+                    userId: id,
+                    productData: data,
+                    amount: total,
+                  },
+                })
+              }
+            >
+              Proceed to Payment
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>
