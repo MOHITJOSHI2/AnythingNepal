@@ -12,7 +12,6 @@ const OrderMessage = ({ productData }) => {
           key={elem._id}
           className="group relative bg-white border border-orange-100 rounded-[2rem] p-6 md:p-8 shadow-sm hover:shadow-xl hover:shadow-orange-100/50 transition-all duration-300 overflow-hidden"
         >
-          {/* Subtle Decorative Background Element */}
           <div className="absolute -right-4 -top-4 w-24 h-24 bg-amber-50 rounded-full opacity-50 group-hover:scale-110 transition-transform" />
 
           <div className="flex flex-col md:flex-row items-center gap-6 relative z-10">
