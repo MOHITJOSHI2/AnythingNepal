@@ -72,7 +72,6 @@ const Messages = () => {
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content Area (Spans 2 columns on desktop) */}
           <div className="lg:col-span-2 space-y-6">
             {orderDetails ? (
               orderDetails.map((elem, index) => (
@@ -125,7 +124,6 @@ const Messages = () => {
             )}
           </div>
 
-          {/* Sidebar Area (Spans 1 column) */}
           <aside className="h-fit sticky top-4">
             <section className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">

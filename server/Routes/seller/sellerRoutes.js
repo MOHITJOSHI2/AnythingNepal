@@ -1,6 +1,6 @@
 const { addSeller, sellerLogin, getSeller, sendMail, updateSeller } = require('../../Controller/seller/seller')
 const { addProduct, getProduct, getSingleProduct, getTotalProduct, deleteProduct, updateProduct } = require('../../Controller/seller/product')
-const { addShop, getSingleShop, updateShop, findShopBySellerId } = require('../../Controller/seller/shop')
+const { addShop, getSingleShop, updateShop, findShopBySellerId, getActiveOrders } = require('../../Controller/seller/shop')
 
 const upload = require("../../Middleware/sellers/product")
 
@@ -26,6 +26,7 @@ router.post('/addShop/:id', upload.upload.single('shopImage'), addShop)
 router.get('/getSingleShop/:id', getSingleShop)
 router.get('/getShopBySellerId/:id', findShopBySellerId)
 router.post('/updateShop/:id', upload.upload.single('shopImage'), updateShop)
+router.get('/getActiveOrders/:id', getActiveOrders)
 
 // Email
 router.post('/sendEmail', sendMail)

@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const BigBox = ({ section, img, text, desc }) => {
   // Logic for side-switching
   const isRight = section === "right";
+  const navigate = useNavigate();
 
   return (
     <div
@@ -44,7 +46,10 @@ const BigBox = ({ section, img, text, desc }) => {
           {desc}
         </p>
 
-        <button className="group relative inline-flex items-center gap-3 py-4 text-stone-900 font-bold uppercase tracking-widest text-xs transition-all hover:text-red-800">
+        <button
+          onClick={() => navigate("/productCategories")}
+          className="group relative inline-flex items-center gap-3 py-4 text-stone-900 font-bold uppercase tracking-widest text-xs transition-all hover:text-red-800"
+        >
           <span>Explore Heritage</span>
           <div className="w-8 h-[1px] bg-stone-900 group-hover:w-12 group-hover:bg-red-800 transition-all"></div>
         </button>

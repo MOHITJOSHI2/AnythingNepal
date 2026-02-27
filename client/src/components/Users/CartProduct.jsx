@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Trash2, CreditCard } from "lucide-react"; // Optional icons
+import { Trash2, CreditCard } from "lucide-react";
 import Payment from "../../pages/Users/Payment";
 
 const CartProduct = ({
@@ -40,7 +40,7 @@ const CartProduct = ({
                  transition-all duration-500 flex flex-col sm:flex-row mt-4 
                  border border-stone-200/50 overflow-hidden"
     >
-      {/* IMAGE SECTION - Square on mobile, fixed width on desktop */}
+      {/* Image - Square on mobile, fixed width on desktop */}
       <div className="relative w-full sm:w-48 h-48 sm:h-auto overflow-hidden m-0 sm:m-3 rounded-none sm:rounded-[1rem] bg-stone-100">
         <img
           src={`${import.meta.env.VITE_localhost}/assets/${src}`}
@@ -54,7 +54,6 @@ const CartProduct = ({
         </div>
       </div>
 
-      {/* DETAILS SECTION */}
       <div className="flex-1 p-6 flex flex-col justify-between">
         <div className="flex justify-between items-start gap-4">
           <div>
@@ -81,7 +80,6 @@ const CartProduct = ({
           </div>
         </div>
 
-        {/* ACTION BUTTONS */}
         <div className="flex gap-3 mt-6">
           <button
             onClick={(e) => {

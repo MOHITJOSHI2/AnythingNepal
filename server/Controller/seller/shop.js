@@ -1,6 +1,8 @@
 const { decryptId, ecnryptId } = require("../../Functions/sellers/idEncryption");
 const shop = require("../../Models/sellers/shop");
-const fs = require('fs')
+const fs = require('fs');
+const payment = require("../../Models/users/payment");
+const Product = require("../../Models/sellers/products")
 
 exports.addShop = async (req, res) => {
     const shopImage = req.file.filename
@@ -90,4 +92,24 @@ exports.findShopBySellerId = async (req, res) => {
     } catch (error) {
         console.log("Error at find shop by seller id \n", error)
     }
+}
+
+exports.getActiveOrders = async (req, res) => {
+    let shopId = ""
+    if (req.params) {
+        shopId = decryptId(req.params.id)
+    }
+    if (shopId.length > 0) {
+        try {
+            let count = 0
+            const products = await Product.find({ shop: shopId })
+            const productIds = products.map((elem) => elem._id)
+            const payedProducts = await payment.find({ products: { $in: productIds } })
+
+            res.status(200).json({ message: payedProducts })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }

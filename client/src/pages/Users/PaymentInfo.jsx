@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const PaymentInfo = () => {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const hasCalledAPI = useRef(false); // Using standard useRef
+  const hasCalledAPI = useRef(false);
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("user");
@@ -26,7 +26,7 @@ const PaymentInfo = () => {
         if (response.status === "COMPLETE") {
           setDatabaseData(response.total_amount);
         } else {
-          setLoading(false); // Handle non-complete status
+          setLoading(false);
         }
       } catch (err) {
         console.error("Failed to parse payment data", err);

@@ -74,7 +74,8 @@ const Product = ({ productId, src, name, price, quantity }) => {
       />
 
       {/* Action Buttons */}
-      {window.location.pathname == "/categories" ? (
+      {window.location.pathname == "/categories" ||
+      window.location.pathname.includes("/individualCategory") ? (
         ""
       ) : (
         <div className="flex justify-between items-center mt-5 px-1">

@@ -23,6 +23,7 @@ import Payment from "./pages/Users/Payment";
 import Messages from "./pages/Users/Messages";
 import PaymentInfo from "./pages/Users/PaymentInfo";
 import IndividualCategory from "./pages/Users/IndividualCategory";
+import IndCategory from "./pages/Seller/IndCategory";
 
 const MyRoutes = () => {
   return (
@@ -57,6 +58,10 @@ const MyRoutes = () => {
           <Route path="/viewProduct/:id" element={<ViewProductPage />} />
           <Route path="/updateProduct/:id" element={<UpdateProduct />} />
           <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/individualCategory/:category"
+            element={<IndCategory />}
+          />
 
           {/** User routes */}
           <Route path="/cart" element={<Cart />} />
@@ -65,7 +70,10 @@ const MyRoutes = () => {
           <Route path="/payment" element={<Payment />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/paymentInfo" element={<PaymentInfo />} />
-          <Route path="/getSingleCategory" element={<IndividualCategory />} />
+          <Route
+            path="/getSingleCategory/:category"
+            element={<IndividualCategory />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

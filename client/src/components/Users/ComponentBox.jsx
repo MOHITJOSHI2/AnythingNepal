@@ -1,7 +1,11 @@
 import { motion, scale } from "motion/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ComponentBox = ({ name, src }) => {
+  const navigate = useNavigate();
+  if (name.includes("Art")) name = "Art and Architecture";
+
   return (
     <motion.div
       whileHover={{ scale: 1.04 }}
@@ -19,8 +23,11 @@ const ComponentBox = ({ name, src }) => {
             {name}
           </p>
         </div>
-        <button className="w-full py-4 bg-stone-900 text-white rounded-2xl font-bold hover:bg-red-800 transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg ">
-          Proceed to Checkout
+        <button
+          onClick={() => navigate(`/getSingleCategory/${name}`)}
+          className="w-full py-4 bg-stone-900 text-white rounded-2xl font-bold hover:bg-red-800 transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg "
+        >
+          Explore Category
         </button>
       </div>
     </motion.div>

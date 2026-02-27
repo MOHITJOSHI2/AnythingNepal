@@ -42,7 +42,7 @@ const Categories = () => {
 
   // filter products by category
   const artProducts = products.filter(
-    (p) => p.productCategory === "Art and Artitecture"
+    (p) => p.productCategory === "Art and Architecture"
   );
   const clothesProducts = products.filter(
     (p) => p.productCategory === "Clothes"
@@ -71,10 +71,15 @@ const Categories = () => {
             {/* Art and Artitecture */}
             {artProducts.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-center mb-4">
+                <h2
+                  className="text-2xl font-bold text-center mb-4"
+                  onClick={() =>
+                    navigate(`/individualCategory/${"Art and Architecture"}`)
+                  }
+                >
                   Art and Artitecture
                 </h2>
-                <div className="flex overflow-x-scroll gap-4 pb-2">
+                <div className="flex flex-nowrap overflow-x-auto gap-4 pb-2">
                   {artProducts.map((elem) => (
                     <div className="flex-shrink-0">
                       <Product
@@ -94,7 +99,12 @@ const Categories = () => {
             {/* Clothes */}
             {clothesProducts.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-center mb-4">Clothes</h2>
+                <h2
+                  className="text-2xl font-bold text-center mb-4"
+                  onClick={() => navigate(`/individualCategory/${"Clothes"}`)}
+                >
+                  Clothes
+                </h2>
                 <div className="flex flex-nowrap overflow-x-auto gap-4 pb-2">
                   {clothesProducts.map((elem) => (
                     <div className="flex-shrink-0">
@@ -115,7 +125,12 @@ const Categories = () => {
             {/* Pottery */}
             {potteryProducts.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-center mb-4">Pottery</h2>
+                <h2
+                  className="text-2xl font-bold text-center mb-4"
+                  onClick={() => navigate(`/individualCategory/${"Pottery"}`)}
+                >
+                  Pottery
+                </h2>
                 <div className="flex overflow-x-auto gap-4 pb-2">
                   {potteryProducts.map((elem) => (
                     <div key={elem._id} className="flex-shrink-0">
@@ -135,7 +150,12 @@ const Categories = () => {
             {/* Clothes */}
             {HandiCraft.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-center mb-4">
+                <h2
+                  className="text-2xl font-bold text-center mb-4"
+                  onClick={() =>
+                    navigate(`/individualCategory/${"HandiCraft"}`)
+                  }
+                >
                   HandiCraft
                 </h2>
                 <div className="flex flex-nowrap overflow-x-auto gap-4 pb-2">

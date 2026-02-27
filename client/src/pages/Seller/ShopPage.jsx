@@ -17,6 +17,7 @@ const ShopPage = () => {
   let shopId = localStorage.getItem("shop");
   const navigate = useNavigate();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [order, setOrders] = useState([]);
 
   useEffect(() => {
     if (!id) {
@@ -47,9 +48,20 @@ const ShopPage = () => {
     }
   }, [id, shopId]);
 
+  useEffect(() => {
+    async function fetchOrder() {
+      const req = await fetch(
+        `${import.meta.env.VITE_localhost}/seller/getActiveOrders/${shopId}`
+      );
+
+      const res = await req.json();
+      setOrders(res.message);
+    }
+    fetchOrder();
+  }, []);
+
   return (
     <div className="bg-[#FFFBFA] min-h-screen">
-      {/* Conditionally hide NavBar only on mobile update or keep it for context */}
       <NavBar
         Contact="Contact"
         Products="Products"
@@ -90,7 +102,6 @@ const ShopPage = () => {
               )}
             </div>
 
-            {/* Main Content Area */}
             <div className="transition-all duration-500 ease-in-out">
               {!isUpdating ? (
                 <div className="bg-white rounded-[2.5rem] shadow-sm border border-orange-100 overflow-hidden">
@@ -108,7 +119,6 @@ const ShopPage = () => {
             </div>
           </div>
         ) : (
-          /* Empty State / Create Shop */
           <div className="flex flex-col items-center justify-center min-h-[70vh]">
             <div className="text-center mb-10 max-w-md">
               <div className="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -129,7 +139,6 @@ const ShopPage = () => {
           </div>
         )}
 
-        {/* Messaging Floating Section */}
         {!isUpdating && shopId && (
           <div className="mt-12">
             <div className="flex items-center gap-2 mb-6 ml-2">
@@ -139,7 +148,7 @@ const ShopPage = () => {
               </h3>
             </div>
             <div className="bg-white/60 backdrop-blur-md rounded-3xl p-4 border border-white/50 shadow-inner">
-              <OrderMessage />
+              <OrderMessage productData={order} />
             </div>
           </div>
         )}

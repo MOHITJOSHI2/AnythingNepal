@@ -94,14 +94,11 @@ const Contact = () => {
       )}
 
       <div className="relative flex items-center justify-center px-4 py-20">
-        {/* Decorative Background Elements for Glass effect to pop */}
         <div className="absolute top-20 left-10 w-64 h-64 bg-red-800/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#5A7863]/20 rounded-full blur-3xl"></div>
 
-        {/* MAIN GLASS CONTAINER */}
         <div className="relative z-10 w-full max-w-6xl bg-white/30 backdrop-blur-xl rounded-[3rem] shadow-2xl border border-white/40 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* LEFT: Contact Info (Dark Theme) */}
             <div className="p-10 md:p-16 bg-stone-900/90 text-white flex flex-col justify-between">
               <div>
                 <span className="text-red-500 font-bold tracking-[0.3em] uppercase text-xs">
@@ -174,7 +171,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* RIGHT: Email Form (Light Glass) */}
             <div className="p-10 md:p-16 flex flex-col justify-center">
               <h3 className="text-3xl font-bold text-stone-900 mb-8 font-serif">
                 Send an Inquiry

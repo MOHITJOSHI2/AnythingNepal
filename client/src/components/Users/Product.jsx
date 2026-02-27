@@ -2,6 +2,7 @@ import React, { useState } from "react"; // Added useState
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Plus, Minus } from "lucide-react"; // Optional: Using icons for better UI
+import EsewaPayment from "./EsewaPayment";
 
 const Product = ({ productId, src, name, price, quantity, shop, id }) => {
   const navigate = useNavigate();
@@ -62,7 +63,6 @@ const Product = ({ productId, src, name, price, quantity, shop, id }) => {
              hover:shadow-2xl hover:bg-white transition-all duration-500
              flex flex-col border border-stone-200/50 relative overflow-hidden mx-auto"
     >
-      {/* IMAGE SECTION */}
       <div className="relative flex-[1.8] overflow-hidden m-3 rounded-[1.5rem] bg-stone-100">
         <img
           src={`${import.meta.env.VITE_localhost}/assets/${src}`}
@@ -76,7 +76,6 @@ const Product = ({ productId, src, name, price, quantity, shop, id }) => {
         </div>
       </div>
 
-      {/* DETAILS SECTION */}
       <div className="flex-[1.5] p-5 pt-2 flex flex-col justify-between">
         <div>
           <h3 className="text-lg font-bold text-stone-900 leading-tight line-clamp-2 font-serif">
@@ -89,7 +88,6 @@ const Product = ({ productId, src, name, price, quantity, shop, id }) => {
               </p>
             </div>
 
-            {/* QUANTITY SELECTOR UI */}
             <div className="flex items-center bg-stone-100 rounded-lg p-1 border border-stone-200">
               <button
                 onClick={decrement}
@@ -117,7 +115,6 @@ const Product = ({ productId, src, name, price, quantity, shop, id }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              handleCart(productId, shop, id);
             }}
             className="flex-1 text-[11px] font-bold uppercase tracking-wider rounded-xl border border-stone-300 py-4 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-all duration-300 active:scale-95"
           >
@@ -125,8 +122,10 @@ const Product = ({ productId, src, name, price, quantity, shop, id }) => {
           </button>
 
           <button
-            onClick={(e) => {
+            onClick={async (e) => {
               e.stopPropagation();
+              await handleCart(productId, shop, id);
+              navigate("/cart");
             }}
             className="flex-1 text-[11px] font-bold uppercase tracking-wider rounded-xl bg-stone-900 text-white py-4 hover:bg-red-800 transition-all duration-300 active:scale-95 shadow-lg shadow-stone-200"
           >

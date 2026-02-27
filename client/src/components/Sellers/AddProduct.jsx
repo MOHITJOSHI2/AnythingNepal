@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const AddProduct = ({ id }) => {
   const productCategory = [
@@ -8,30 +9,33 @@ const AddProduct = ({ id }) => {
     "Pottery",
     "HandiCraft",
   ];
+
   const [img, setImg] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+
   const [productData, setProductData] = useState({
-    photo: "",
     productName: "",
-    productPrice: 0,
+    productPrice: "",
     productQuantity: "1",
     productCategory: "",
     productDescription: "",
   });
+
   const shopId = localStorage.getItem("shop");
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
+      setError("");
       setImg(URL.createObjectURL(e.target.files[0]));
-      setProductData((prev) => ({
-        ...prev,
-        photo: e.target.files[0].name,
-      }));
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setError("");
     setProductData((prev) => ({
       ...prev,
       [name]: value,
@@ -39,17 +43,36 @@ const AddProduct = ({ id }) => {
   };
 
   useEffect(() => {
-    if (!id) {
-      console.log("Error occurred");
-      return;
-    }
-
+    if (!id) return;
     if (!shopId) {
       navigate("/shop/'");
     }
-  }, [id]);
+  }, [id, shopId, navigate]);
+
+  const validateForm = () => {
+    const fileInput = document.getElementById("productImage");
+    if (!fileInput.files[0]) return "Please upload a product image.";
+    if (!productData.productName.trim()) return "Product name is required.";
+    if (!productData.productPrice || productData.productPrice <= 0)
+      return "Please enter a valid price.";
+    if (!productData.productQuantity || productData.productQuantity < 1)
+      return "Quantity must be at least 1.";
+    if (!productData.productCategory) return "Please select a category.";
+    if (productData.productDescription.trim().length < 10)
+      return "Description must be at least 10 characters.";
+    return null;
+  };
 
   async function sendData() {
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
     const formData = new FormData();
     formData.append(
       "productImage",
@@ -72,41 +95,68 @@ const AddProduct = ({ id }) => {
 
       const res = await req.json();
       if (req.ok) {
-        console.log(res.message);
-        document.getElementById("form").reset();
-        setImg(null);
-        window.location.reload();
+        setSuccess(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } else {
-        console.log(res.err);
+        setError(res.err || "Something went wrong on the server.");
+        setLoading(false);
       }
     } catch (err) {
-      console.log("Error:", err);
+      setError("Failed to connect to the server.");
+      setLoading(false);
     }
   }
 
   return (
-    <div className="flex flex-col justify-center items-center py-3">
-      <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl overflow-hidden border border-[#d4a373]/40 transition-all duration-300 hover:shadow-2xl">
-        <div className="bg-gradient-to-r from-[#f8ead8] to-[#f4e3c1] p-5">
-          <h2 className="text-2xl font-bold text-center text-[#5a3e2b]">
-            Add a New Product
-          </h2>
-          <p className="text-center text-sm text-gray-600 mt-1">
-            Fill the details below to add your product
+    <div className="flex flex-col justify-center items-center py-8 px-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-lg bg-white shadow-2xl rounded-3xl overflow-hidden border border-[#d4a373]/20"
+      >
+        <div className="bg-gradient-to-r from-[#5a3e2b] to-[#8c634a] p-6 text-white text-center">
+          <h2 className="text-2xl font-bold tracking-tight">Add New Product</h2>
+          <p className="text-white/80 text-sm mt-1">
+            List your masterpiece in the Nepal Marketplace
           </p>
         </div>
 
-        <form
-          method="POST"
-          action="/"
-          id="form"
-          encType="multipart/form-data"
-          className="p-5"
-        >
-          {/* Image Upload */}
+        <form id="form" className="p-8 space-y-5">
+          {/* Error & Success Banner */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="bg-red-50 border-l-4 border-red-500 p-3 text-red-700 text-sm font-medium rounded shadow-sm"
+              >
+                {error}
+              </motion.div>
+            )}
+            {success && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                className="bg-green-50 border-l-4 border-green-500 p-3 text-green-700 text-sm font-medium rounded shadow-sm"
+              >
+                Product added successfully! Reloading...
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Image Upload Area */}
           <div
-            onClick={() => document.getElementById("productImage").click()}
-            className="relative border-2 border-dashed border-black rounded-lg w-full h-48 flex flex-col items-center justify-center cursor-pointer hover:border-[#b07b4d] hover:bg-[#fff8f1] transition-all ease-in-out mb-4 overflow-hidden"
+            onClick={() =>
+              !loading && document.getElementById("productImage").click()
+            }
+            className={`relative group border-2 border-dashed rounded-2xl w-full h-56 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden ${
+              error.toLowerCase().includes("image")
+                ? "border-red-400 bg-red-50"
+                : "border-slate-300 hover:border-amber-500 hover:bg-amber-50"
+            }`}
           >
             {img ? (
               <img
@@ -115,10 +165,13 @@ const AddProduct = ({ id }) => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="text-center text-gray-500 font-medium">
-                <p>Click to upload image</p>
-                <p className="text-xs text-gray-400 mt-1">
-                  Supported: jpg, png, jpeg
+              <div className="text-center group-hover:scale-110 transition-transform duration-300">
+                <div className="text-4xl mb-2 text-slate-400">🖼️</div>
+                <p className="text-slate-600 font-semibold">
+                  Upload Product Image
+                </p>
+                <p className="text-xs text-slate-400 uppercase tracking-widest mt-1">
+                  PNG, JPG up to 5MB
                 </p>
               </div>
             )}
@@ -127,105 +180,106 @@ const AddProduct = ({ id }) => {
           <input
             hidden
             type="file"
-            name="productImage"
             id="productImage"
-            required
             onChange={handleFileChange}
-            accept="image/jpeg, image/png, .jpg, .jpeg, .png"
+            accept="image/*"
           />
 
-          {/* Product Name */}
-          <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
-              Product Name
-            </label>
-            <input
-              type="text"
-              onChange={handleChange}
-              placeholder="e.g., Handmade Clay Pot"
-              name="productName"
-              maxLength={100}
-              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
-            />
+          {/* Input Fields Grid */}
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Product Name
+              </label>
+              <input
+                type="text"
+                name="productName"
+                onChange={handleChange}
+                placeholder="Ex: Traditional Singing Bowl"
+                className="w-full px-4 py-3 border-b-2 border-slate-200 focus:border-amber-500 outline-none transition-all bg-slate-50/50 rounded-t-lg"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  Price (Rs)
+                </label>
+                <input
+                  type="number"
+                  name="productPrice"
+                  onChange={handleChange}
+                  placeholder="2500"
+                  className="w-full px-4 py-3 border-b-2 border-slate-200 focus:border-amber-500 outline-none transition-all bg-slate-50/50 rounded-t-lg"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  Stock Quantity
+                </label>
+                <input
+                  type="number"
+                  name="productQuantity"
+                  defaultValue="1"
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border-b-2 border-slate-200 focus:border-amber-500 outline-none transition-all bg-slate-50/50 rounded-t-lg"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Category
+              </label>
+              <select
+                name="productCategory"
+                onChange={handleChange}
+                className="w-full px-4 py-3 border-b-2 border-slate-200 focus:border-amber-500 outline-none transition-all bg-slate-50/50 rounded-t-lg appearance-none"
+              >
+                <option value="">Select Category</option>
+                {productCategory.map((cat, idx) => (
+                  <option key={idx} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Description
+              </label>
+              <textarea
+                name="productDescription"
+                onChange={handleChange}
+                rows="3"
+                placeholder="Tell us about the craftsmanship..."
+                className="w-full px-4 py-3 border-b-2 border-slate-200 focus:border-amber-500 outline-none transition-all bg-slate-50/50 rounded-t-lg resize-none"
+              />
+            </div>
           </div>
 
-          {/* Product Price */}
-          <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
-              Product Price (Rs)
-            </label>
-            <input
-              type="number"
-              maxLength={6}
-              name="productPrice"
-              onChange={handleChange}
-              placeholder="e.g., 1500"
-              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
-            />
-          </div>
-
-          {/* Quantity */}
-          <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
-              Quantity
-            </label>
-            <input
-              type="number"
-              min={1}
-              onChange={handleChange}
-              placeholder="e.g., 10"
-              name="productQuantity"
-              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
-            />
-          </div>
-
-          {/* Category */}
-          <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
-              Category
-            </label>
-            <select
-              name="productCategory"
-              value={productData.productCategory}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
-            >
-              <option value="">-- Select Category --</option>
-              {productCategory.map((elem, index) => (
-                <option key={index} value={elem}>
-                  {elem}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Description */}
-          <div className="mt-3">
-            <label className="block text-[#5a3e2b] text-sm font-semibold mb-1">
-              Description
-            </label>
-            <textarea
-              name="productDescription"
-              maxLength={300}
-              onChange={handleChange}
-              placeholder="Describe your product in a few sentences..."
-              className="w-full px-4 py-2 border-b-[2px] border-solid border-black bg-white outline-0"
-              rows="4"
-            ></textarea>
-          </div>
-
-          {/* Button */}
-          <div className="mt-5">
-            <button
-              className="w-full py-2.5 bg-[#5a3e2b] hover:bg-[#7c583b] text-white font-semibold rounded-lg shadow-md transition-all duration-300"
-              type="button"
-              onClick={sendData}
-            >
-              Add Product
-            </button>
-          </div>
+          <button
+            disabled={loading}
+            onClick={sendData}
+            type="button"
+            className={`w-full py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 transform active:scale-95 flex justify-center items-center gap-2 ${
+              loading
+                ? "bg-slate-400 cursor-not-allowed"
+                : "bg-[#5a3e2b] hover:bg-[#3e2b1e] hover:shadow-amber-500/20"
+            }`}
+          >
+            {loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Uploading...
+              </>
+            ) : (
+              "Publish Product"
+            )}
+          </button>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };

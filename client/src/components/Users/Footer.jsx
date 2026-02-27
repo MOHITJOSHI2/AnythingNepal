@@ -72,7 +72,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Artisan Support (Contact) */}
         <div>
           <h3 className="text-white font-bold uppercase tracking-[0.2em] text-xs mb-6">
             Artisan Support
@@ -91,7 +90,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Cultural Newsletter */}
         <div className="bg-white/5 p-6 rounded-3xl border border-white/10">
           <h3 className="text-white font-bold text-sm mb-4 tracking-tight">
             Stay Connected

@@ -108,7 +108,6 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
           </li>
         </ul>
 
-        {/* SEARCH BAR */}
         <div className="flex-1 flex justify-center px-4 max-sm:px-1">
           <div className="relative w-full max-w-[380px]">
             <input
@@ -127,7 +126,6 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
               🔍
             </button>
 
-            {/* FIX 2: Added 'scrollbar-hide' and ensured no horizontal overflow */}
             {search && productsName.length > 0 && (
               <div className="absolute top-full mt-2 left-0 w-full bg-white rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto border border-gray-200">
                 {productsName.map((elem) => (
@@ -175,7 +173,6 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
           </div>
         </div>
 
-        {/* HAMBURGER */}
         <button
           className="min-[1146px]:hidden flex text-3xl text-white ml-3"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -184,7 +181,6 @@ const NavBar = ({ Messages, Products, Signup, Contact }) => {
         </button>
       </div>
 
-      {/* MOBILE MENU - FIX 3: Optimized height and overflow */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div

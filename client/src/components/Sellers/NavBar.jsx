@@ -22,29 +22,20 @@ const NavBar = ({
   const sellerShopId = localStorage.getItem("shop");
   const dynamicShopLink = sellerShopId ? `/shop/${sellerShopId}` : "/shop/'";
 
-  const homeNav =
-    "sticky top-0 z-50 bg-gradient-to-b from-[#0d0d0d]/70 via-[#1a0e0e]/60 to-[#260505]/70 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.4)] border-b border-[#ffb347]/0";
   const otherNav =
-    "sticky top-0 z-50 bg-[#1F1F1F] backdrop-blur-lg border-b border-[#333]/40";
-
-  const location = window.location.href;
-  const navCss =
-    location.includes("/adminHomePage") || location.includes("/userHomePage")
-      ? homeNav
-      : otherNav;
+    "sticky p-2  top-0 z-50 bg-[#1F1F1F] backdrop-blur-lg border-b border-[#333]/40";
 
   const linkStyle =
     "text-white/90 hover:text-amber-400 cursor-pointer text-lg transition-all duration-200 ease-in-out";
 
   return (
-    <nav className={navCss}>
+    <nav className={otherNav}>
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <div
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <span className="text-2xl">🕉️</span>
           <span className="text-xl font-bold bg-gradient-to-r from-amber-300 to-red-400 bg-clip-text text-transparent">
             AnythingNepal
           </span>

@@ -163,34 +163,14 @@ const HomePage = () => {
                 </motion.div>
               </motion.div>
 
-              {/* CTA Button with Hover Effects */}
               <motion.button
                 variants={fadeInUp}
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-3 text-lg font-bold group hover:text-red-700 transition-colors"
+                onClick={() => navigate("/showProducts")}
               >
                 <span>Start Exploring</span>
-                <motion.div
-                  whileHover={{ rotate: "360deg" }}
-                  transition={{ ease: "easeInOut", duration: 0.4 }}
-                  className="w-10 h-10 rounded-full bg-stone-900 text-white flex items-center justify-center group-hover:bg-red-700 transition-all shadow-md group-hover:shadow-red-200"
-                >
-                  <motion.svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={3}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </motion.svg>
-                </motion.div>
               </motion.button>
             </motion.div>
           </section>
@@ -229,6 +209,7 @@ const HomePage = () => {
                     }`}
                     alt={item.productName}
                     className="h-2/3 w-full object-cover"
+                    onClick={() => navigate(`/viewProduct/${item._id}`)}
                   />
                   <div className="p-4 md:p-6">
                     <h3 className="font-bold text-sm md:text-lg truncate">
@@ -337,7 +318,10 @@ const HomePage = () => {
               </div>
 
               <div className="pt-8 flex">
-                <button className="px-12 py-5 bg-white text-stone-900 font-bold rounded-2xl hover:bg-red-800 hover:text-white transition-all shadow-xl active:scale-95 uppercase text-xs tracking-widest">
+                <button
+                  onClick={() => navigate(`/viewProduct/${product[0]._id}`)}
+                  className="px-12 py-5 bg-white text-stone-900 font-bold rounded-2xl hover:bg-red-800 hover:text-white transition-all shadow-xl active:scale-95 uppercase text-xs tracking-widest"
+                >
                   Acquire Now
                 </button>
               </div>

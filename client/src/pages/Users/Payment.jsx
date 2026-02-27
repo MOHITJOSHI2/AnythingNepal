@@ -18,8 +18,6 @@ const Payment = () => {
   if (!productData) return null;
 
   const handlePurchase = async () => {
-    // Calling the Initial Payment push
-
     setPayment(true);
   };
 

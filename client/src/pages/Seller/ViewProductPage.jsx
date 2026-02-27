@@ -11,14 +11,17 @@ import {
 const ViewProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const userId = localStorage.getItem("user");
 
   const [product, setProduct] = useState({
+    pId: "",
     name: "",
     src: "",
     price: "",
     quantity: "",
     category: "",
     description: "",
+    shopId: "",
   });
   const [loading, setLoading] = useState(true);
 
@@ -35,12 +38,14 @@ const ViewProductPage = () => {
         if (req.ok) {
           const p = res.message[0];
           setProduct({
+            pId: p._id,
             name: p.productName,
             src: p.productImage,
             price: p.productPrice,
             quantity: p.productQuantity,
             category: p.productCategory,
             description: p.productDescription,
+            shopId: p.shop,
           });
         }
       } catch (error) {
@@ -51,6 +56,35 @@ const ViewProductPage = () => {
     };
     fetchProduct();
   }, [id]);
+
+  //User cart
+  const handleCart = async (productId, shopId, userId) => {
+    const data = {
+      productId: productId,
+      shopId: shopId,
+      userId: userId,
+      quantity: 1,
+    };
+    try {
+      const req = await fetch(
+        `${import.meta.env.VITE_localhost}/user/addToCart`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const res = await req.json();
+      if (req.ok) {
+        console.log(`Added ${1} items to cart`);
+      } else {
+        console.log(res.err);
+      }
+    } catch (error) {
+      console.log("Error at addToCartFront: ", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -78,7 +112,6 @@ const ViewProductPage = () => {
 
       <main className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* LEFT: Image Gallery Style */}
           <div className="relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-100 to-slate-100 rounded-3xl blur opacity-25"></div>
             <div className="relative overflow-hidden rounded-3xl bg-white shadow-2xl shadow-slate-200">
@@ -90,7 +123,6 @@ const ViewProductPage = () => {
             </div>
           </div>
 
-          {/* RIGHT: Product Information */}
           <div className="flex flex-col pt-4">
             {/* Category Badge */}
             <div className="flex items-center gap-2 mb-4">
@@ -144,20 +176,33 @@ const ViewProductPage = () => {
 
             {/* USER ACTIONS */}
             {isUser && !isSeller && (
-              <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+              <div
+                className="flex flex-col sm:flex-row gap-4 mt-auto"
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  await handleCart(product.pId, product.shopId, userId);
+                  navigate("/cart");
+                }}
+              >
                 <button className="flex-1 px-8 py-4 bg-white border-2 border-slate-900 text-slate-900 rounded-2xl shadow-sm hover:bg-slate-900 hover:text-white transition-all duration-300 font-bold flex items-center justify-center gap-2 group">
                   <FaShoppingCart className="group-hover:rotate-12 transition-transform" />
                   Add to Cart
                 </button>
 
-                <button className="flex-1 px-8 py-4 bg-indigo-600 text-white rounded-2xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:shadow-indigo-300 transition-all duration-300 font-bold flex items-center justify-center gap-2">
+                <button
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await handleCart(product.pId, product.shopId, userId);
+                    navigate("/cart");
+                  }}
+                  className="flex-1 px-8 py-4 bg-indigo-600 text-white rounded-2xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:shadow-indigo-300 transition-all duration-300 font-bold flex items-center justify-center gap-2"
+                >
                   <FaBolt />
                   Buy It Now
                 </button>
               </div>
             )}
 
-            {/* Seller Warning/Info */}
             {isSeller && (
               <div className="mt-8 p-4 border border-amber-100 bg-amber-50/50 rounded-xl text-amber-700 text-sm">
                 Viewing as seller. To purchase this item, please log in with a

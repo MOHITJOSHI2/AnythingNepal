@@ -7,9 +7,11 @@ import amber from "../../assets/amber.png";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useNavigate } from "react-router-dom";
 
 const Carousal = ({ product }) => {
   const noProducts = !product || product.length === 0;
+  const navigate = useNavigate();
 
   return (
     <div className="w-full flex justify-center">
