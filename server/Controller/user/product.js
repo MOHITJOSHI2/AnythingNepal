@@ -50,6 +50,7 @@ exports.payedProducts = async (req, res) => {
         }
         const productsId = data.map((elem) => elem.products)
         let productIds = productsId[0]
+        console.log(productIds)
 
         const fetchProductsData = await Products.find({ _id: { $in: productIds } })
         if (fetchProductsData.length > 0) {

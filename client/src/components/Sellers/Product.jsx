@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../App.css";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Product = ({ productId, src, name, price, quantity }) => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handelDelete = async (id) => {
     const req = await fetch(
@@ -19,6 +20,7 @@ const Product = ({ productId, src, name, price, quantity }) => {
       window.location.reload();
     } else {
       console.log(res.err);
+      setError(res.err);
     }
   };
 
@@ -102,13 +104,19 @@ const Product = ({ productId, src, name, price, quantity }) => {
                      transition-all duration-300 ease-out active:scale-95"
             onClick={(e) => {
               e.stopPropagation();
-              handelDelete(productId);
+              const confirmDelete = window.confirm(
+                "Are you sure you want to delete this product?"
+              );
+              if (confirmDelete) {
+                handelDelete(productId);
+              }
             }}
           >
             Delete
           </button>
         </div>
       )}
+      <div className="text-center text-xs text-red-500">{error}</div>
     </motion.div>
   );
 };

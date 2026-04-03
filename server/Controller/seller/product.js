@@ -3,6 +3,7 @@ const Products = require('../../Models/sellers/products')
 const Seller = require('../../Models/sellers/sellers')
 const Shop = require('../../Models/sellers/shop')
 const fs = require('fs')
+const payment = require('../../Models/users/payment')
 
 exports.addProduct = async (req, res) => {
     const productImage = req.file.filename
@@ -113,6 +114,7 @@ exports.deleteProduct = async (req, res) => {
     const id = req.params.id
     try {
         const product = await Products.findOne({ _id: id })
+
         if (product) {
             const deleteProduct = await Products.findByIdAndDelete(id)
             if (deleteProduct) {

@@ -117,8 +117,12 @@ const LoginForm = () => {
 
         {/* Links */}
         <div className="flex justify-between items-center mt-3 text-sm">
-          <a href="/forgot-password" className="text-[#8b3e2f] hover:underline">
-            Forgot Password?
+          <a
+            href="#"
+            onClick={() => navigate(-1)}
+            className="text-[#8b3e2f] hover:underline"
+          >
+            back
           </a>
           <a href="/" className="text-[#8b3e2f] hover:underline">
             Sign Up

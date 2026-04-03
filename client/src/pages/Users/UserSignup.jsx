@@ -86,7 +86,7 @@ const UserSignup = () => {
         }
       );
 
-      const res = req.json();
+      const res = await req.json();
       if (req.ok) {
         console.log(res.message);
         navigate("/pages/users/userLogin");

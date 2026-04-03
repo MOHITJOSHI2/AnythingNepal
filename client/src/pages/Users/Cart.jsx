@@ -47,7 +47,7 @@ const Cart = () => {
     }
 
     viewCart();
-  }, [data]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-stone-50 pb-32">
